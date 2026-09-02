@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: pfUI-DQB
+## Notes: pfUI integration and customization on dialogs, questlog and books
+## Author: jKalfis
+## Version: 0.0.1
+## Dependencies: pfUI
+
+Core.lua
