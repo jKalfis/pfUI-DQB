@@ -1,6 +1,9 @@
+```lua
 ------------------------------------------------------------
 -- pfUI-DQB
--- GUI
+-- GUI.lua
+--
+-- Registers the DQB configuration inside pfUI's GUI.
 ------------------------------------------------------------
 
 local DQB = pfUI and pfUI.dqb
@@ -11,297 +14,370 @@ end
 
 
 ------------------------------------------------------------
--- Register DQB configuration GUI
+-- Create DQB configuration menu
 ------------------------------------------------------------
 
-pfUI:RegisterModule("dqb_gui", function()
+function DQB:CreateGUI()
+
+    -- Make sure our configuration exists
+    if self.InitializeConfig then
+        self:InitializeConfig()
+    end
+
+    if not pfUI_config or not pfUI_config.dqb then
+        return
+    end
 
     --------------------------------------------------------
-    -- Main DQB category
+    -- Register DQB category
     --------------------------------------------------------
 
-    CreateGUIEntry("DQB", nil, function()
+    pfUI:RegisterConfig(
+        "DQB",
+        "DQB",
+        function()
 
-        ----------------------------------------------------
-        -- General
-        ----------------------------------------------------
+            ------------------------------------------------
+            -- General
+            ------------------------------------------------
 
-        CreateConfig(
-            nil,
-            "Enable DQB",
-            C.dqb.general,
-            "enable",
-            "checkbox"
-        )
-
-    end)
-
-
-    --------------------------------------------------------
-    -- Quest & Gossip
-    --------------------------------------------------------
-
-    CreateGUIEntry("DQB", "Quest & Gossip", function()
-
-        CreateConfig(
-            nil,
-            "Enable Background",
-            C.dqb.questgossip,
-            "background_global",
-            "checkbox"
-        )
-
-        CreateConfig(
-            nil,
-            "Background Color",
-            C.dqb.questgossip,
-            "background_color"
-        )
-
-        CreateConfig(
-            nil,
-            "Background Alpha",
-            C.dqb.questgossip,
-            "background_alpha"
-        )
-
-        CreateConfig(
-            nil,
-            "Enable Text",
-            C.dqb.questgossip,
-            "text_global",
-            "checkbox"
-        )
-
-        CreateConfig(
-            nil,
-            "Text Font",
-            C.dqb.questgossip,
-            "text_font"
-        )
-
-        CreateConfig(
-            nil,
-            "Text Size",
-            C.dqb.questgossip,
-            "text_size"
-        )
-
-        CreateConfig(
-            nil,
-            "Text Style",
-            C.dqb.questgossip,
-            "text_style"
-        )
-
-        CreateConfig(
-            nil,
-            "Text Color",
-            C.dqb.questgossip,
-            "text_color"
-        )
-
-    end)
+            CreateConfig(
+                nil,
+                "Enable DQB",
+                pfUI_config.dqb.general,
+                "enable",
+                "checkbox"
+            )
 
 
-    --------------------------------------------------------
-    -- Quest Log
-    --------------------------------------------------------
+            ------------------------------------------------
+            -- Quest & Gossip
+            ------------------------------------------------
 
-    CreateGUIEntry("DQB", "Quest Log", function()
+            CreateConfig(
+                nil,
+                "Quest & Gossip",
+                nil,
+                nil,
+                "header"
+            )
 
-        CreateConfig(
-            nil,
-            "Enable Background",
-            C.dqb.questlog,
-            "background_global",
-            "checkbox"
-        )
+            CreateConfig(
+                nil,
+                "Enable Background",
+                pfUI_config.dqb.questgossip,
+                "background_global",
+                "checkbox"
+            )
 
-        CreateConfig(
-            nil,
-            "Background Color",
-            C.dqb.questlog,
-            "background_color"
-        )
+            CreateConfig(
+                nil,
+                "Background Color",
+                pfUI_config.dqb.questgossip,
+                "background_color",
+                "color"
+            )
 
-        CreateConfig(
-            nil,
-            "Background Alpha",
-            C.dqb.questlog,
-            "background_alpha"
-        )
+            CreateConfig(
+                nil,
+                "Background Opacity",
+                pfUI_config.dqb.questgossip,
+                "background_alpha",
+                "text"
+            )
 
-        CreateConfig(
-            nil,
-            "Enable Text",
-            C.dqb.questlog,
-            "text_global",
-            "checkbox"
-        )
+            CreateConfig(
+                nil,
+                "Enable Text",
+                pfUI_config.dqb.questgossip,
+                "text_global",
+                "checkbox"
+            )
 
-        CreateConfig(
-            nil,
-            "Text Font",
-            C.dqb.questlog,
-            "text_font"
-        )
+            CreateConfig(
+                nil,
+                "Text Font",
+                pfUI_config.dqb.questgossip,
+                "text_font",
+                "text"
+            )
 
-        CreateConfig(
-            nil,
-            "Text Size",
-            C.dqb.questlog,
-            "text_size"
-        )
+            CreateConfig(
+                nil,
+                "Text Size",
+                pfUI_config.dqb.questgossip,
+                "text_size",
+                "text"
+            )
 
-        CreateConfig(
-            nil,
-            "Text Style",
-            C.dqb.questlog,
-            "text_style"
-        )
+            CreateConfig(
+                nil,
+                "Text Style",
+                pfUI_config.dqb.questgossip,
+                "text_style",
+                "text"
+            )
 
-        CreateConfig(
-            nil,
-            "Text Color",
-            C.dqb.questlog,
-            "text_color"
-        )
-
-    end)
-
-
-    --------------------------------------------------------
-    -- Item Text
-    --------------------------------------------------------
-
-    CreateGUIEntry("DQB", "Item Text", function()
-
-        CreateConfig(
-            nil,
-            "Enable Background",
-            C.dqb.itemtext,
-            "background_global",
-            "checkbox"
-        )
-
-        CreateConfig(
-            nil,
-            "Background Color",
-            C.dqb.itemtext,
-            "background_color"
-        )
-
-        CreateConfig(
-            nil,
-            "Background Alpha",
-            C.dqb.itemtext,
-            "background_alpha"
-        )
-
-        CreateConfig(
-            nil,
-            "Enable Text",
-            C.dqb.itemtext,
-            "text_global",
-            "checkbox"
-        )
-
-        CreateConfig(
-            nil,
-            "Text Font",
-            C.dqb.itemtext,
-            "text_font"
-        )
-
-        CreateConfig(
-            nil,
-            "Text Size",
-            C.dqb.itemtext,
-            "text_size"
-        )
-
-        CreateConfig(
-            nil,
-            "Text Style",
-            C.dqb.itemtext,
-            "text_style"
-        )
-
-        CreateConfig(
-            nil,
-            "Text Color",
-            C.dqb.itemtext,
-            "text_color"
-        )
-
-    end)
+            CreateConfig(
+                nil,
+                "Text Color",
+                pfUI_config.dqb.questgossip,
+                "text_color",
+                "color"
+            )
 
 
-    --------------------------------------------------------
-    -- Merchant
-    --------------------------------------------------------
+            ------------------------------------------------
+            -- Quest Log
+            ------------------------------------------------
 
-    CreateGUIEntry("DQB", "Merchant", function()
+            CreateConfig(
+                nil,
+                "Quest Log",
+                nil,
+                nil,
+                "header"
+            )
 
-        CreateConfig(
-            nil,
-            "Enable Background",
-            C.dqb.merchant,
-            "background_global",
-            "checkbox"
-        )
+            CreateConfig(
+                nil,
+                "Enable Background",
+                pfUI_config.dqb.questlog,
+                "background_global",
+                "checkbox"
+            )
 
-        CreateConfig(
-            nil,
-            "Background Color",
-            C.dqb.merchant,
-            "background_color"
-        )
+            CreateConfig(
+                nil,
+                "Background Color",
+                pfUI_config.dqb.questlog,
+                "background_color",
+                "color"
+            )
 
-        CreateConfig(
-            nil,
-            "Background Alpha",
-            C.dqb.merchant,
-            "background_alpha"
-        )
+            CreateConfig(
+                nil,
+                "Background Opacity",
+                pfUI_config.dqb.questlog,
+                "background_alpha",
+                "text"
+            )
 
-        CreateConfig(
-            nil,
-            "Enable Text",
-            C.dqb.merchant,
-            "text_global",
-            "checkbox"
-        )
+            CreateConfig(
+                nil,
+                "Enable Text",
+                pfUI_config.dqb.questlog,
+                "text_global",
+                "checkbox"
+            )
 
-        CreateConfig(
-            nil,
-            "Text Font",
-            C.dqb.merchant,
-            "text_font"
-        )
+            CreateConfig(
+                nil,
+                "Text Font",
+                pfUI_config.dqb.questlog,
+                "text_font",
+                "text"
+            )
 
-        CreateConfig(
-            nil,
-            "Text Size",
-            C.dqb.merchant,
-            "text_size"
-        )
+            CreateConfig(
+                nil,
+                "Text Size",
+                pfUI_config.dqb.questlog,
+                "text_size",
+                "text"
+            )
 
-        CreateConfig(
-            nil,
-            "Text Style",
-            C.dqb.merchant,
-            "text_style"
-        )
+            CreateConfig(
+                nil,
+                "Text Style",
+                pfUI_config.dqb.questlog,
+                "text_style",
+                "text"
+            )
 
-        CreateConfig(
-            nil,
-            "Text Color",
-            C.dqb.merchant,
-            "text_color"
-        )
+            CreateConfig(
+                nil,
+                "Text Color",
+                pfUI_config.dqb.questlog,
+                "text_color",
+                "color"
+            )
 
-    end)
 
+            ------------------------------------------------
+            -- Item Text
+            ------------------------------------------------
+
+            CreateConfig(
+                nil,
+                "Item Text",
+                nil,
+                nil,
+                "header"
+            )
+
+            CreateConfig(
+                nil,
+                "Enable Background",
+                pfUI_config.dqb.itemtext,
+                "background_global",
+                "checkbox"
+            )
+
+            CreateConfig(
+                nil,
+                "Background Color",
+                pfUI_config.dqb.itemtext,
+                "background_color",
+                "color"
+            )
+
+            CreateConfig(
+                nil,
+                "Background Opacity",
+                pfUI_config.dqb.itemtext,
+                "background_alpha",
+                "text"
+            )
+
+            CreateConfig(
+                nil,
+                "Enable Text",
+                pfUI_config.dqb.itemtext,
+                "text_global",
+                "checkbox"
+            )
+
+            CreateConfig(
+                nil,
+                "Text Font",
+                pfUI_config.dqb.itemtext,
+                "text_font",
+                "text"
+            )
+
+            CreateConfig(
+                nil,
+                "Text Size",
+                pfUI_config.dqb.itemtext,
+                "text_size",
+                "text"
+            )
+
+            CreateConfig(
+                nil,
+                "Text Style",
+                pfUI_config.dqb.itemtext,
+                "text_style",
+                "text"
+            )
+
+            CreateConfig(
+                nil,
+                "Text Color",
+                pfUI_config.dqb.itemtext,
+                "text_color",
+                "color"
+            )
+
+
+            ------------------------------------------------
+            -- Merchant
+            ------------------------------------------------
+
+            CreateConfig(
+                nil,
+                "Merchant",
+                nil,
+                nil,
+                "header"
+            )
+
+            CreateConfig(
+                nil,
+                "Enable Background",
+                pfUI_config.dqb.merchant,
+                "background_global",
+                "checkbox"
+            )
+
+            CreateConfig(
+                nil,
+                "Background Color",
+                pfUI_config.dqb.merchant,
+                "background_color",
+                "color"
+            )
+
+            CreateConfig(
+                nil,
+                "Background Opacity",
+                pfUI_config.dqb.merchant,
+                "background_alpha",
+                "text"
+            )
+
+            CreateConfig(
+                nil,
+                "Enable Text",
+                pfUI_config.dqb.merchant,
+                "text_global",
+                "checkbox"
+            )
+
+            CreateConfig(
+                nil,
+                "Text Font",
+                pfUI_config.dqb.merchant,
+                "text_font",
+                "text"
+            )
+
+            CreateConfig(
+                nil,
+                "Text Size",
+                pfUI_config.dqb.merchant,
+                "text_size",
+                "text"
+            )
+
+            CreateConfig(
+                nil,
+                "Text Style",
+                pfUI_config.dqb.merchant,
+                "text_style",
+                "text"
+            )
+
+            CreateConfig(
+                nil,
+                "Text Color",
+                pfUI_config.dqb.merchant,
+                "text_color",
+                "color"
+            )
+
+        end
+    )
+end
+
+
+------------------------------------------------------------
+-- Initialize GUI after pfUI has loaded
+------------------------------------------------------------
+
+local event = CreateFrame("Frame")
+
+event:RegisterEvent("ADDON_LOADED")
+
+event:SetScript("OnEvent", function()
+    if arg1 == "pfUI" then
+
+        if DQB.CreateGUI then
+            DQB:CreateGUI()
+        end
+
+        event:UnregisterEvent("ADDON_LOADED")
+    end
 end)
+```
