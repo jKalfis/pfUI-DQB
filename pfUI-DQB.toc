@@ -7,4 +7,4 @@
 
 core.lua
 config.lua
-GUI.lua
+gui.lua
