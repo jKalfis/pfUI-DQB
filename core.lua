@@ -119,10 +119,18 @@ function DQB:Initialize()
     )
 
     self:Debug(
-        "status: " ..
-        (self:IsEnabled() and "enabled" or "disabled")
+        "status: " .. (self:IsEnabled() and "enabled" or "disabled")
     )
 
+    --------------------------------------------------------
+    -- Load DQB modules
+    --------------------------------------------------------
+
+    for name, module in pairs(self.modules) do
+        if module then
+            module()
+        end
+    end
 end
 
 ------------------------------------------------------------
