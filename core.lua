@@ -1,110 +1,166 @@
---[[
-  pfUI-DQB
-  Dialog, QuestLog & Books pfUI Style
-
-  Core
-]]
-
 local addonName = "pfUI-DQB"
 
--- Make sure pfUI exists.
+-- pfUI-DQB only works when pfUI is loaded.
 if not pfUI then
-  return
+    return
 end
 
--- DQB namespace
+-- Main pfUI-DQB namespace
 pfUI.dqb = pfUI.dqb or {}
 local DQB = pfUI.dqb
 
 DQB.name = addonName
-DQB.version = "0.1.0"
+DQB.version = "0.1.1"
 
--- Configuration root
 DQB.config = DQB.config or {}
-
--- Runtime state
 DQB.modules = DQB.modules or {}
 
--- Register a DQB module.
-function DQB:RegisterModule(name, func)
-  if not name or not func then
-    return
-  end
 
-  self.modules[name] = func
+------------------------------------------------------------
+-- Module system
+------------------------------------------------------------
+
+function DQB:RegisterModule(name, func)
+    if not name or not func then
+        return
+    end
+
+    self.modules[name] = func
 end
 
--- Safely get a pfUI global configuration value.
+
+------------------------------------------------------------
+-- Configuration helpers
+------------------------------------------------------------
+
 function DQB:GetGlobalConfig(key, default)
-  if not pfUI_config
+    if not pfUI_config
     or not pfUI_config.global
     or pfUI_config.global[key] == nil then
-    return default
-  end
+        return default
+    end
 
-  return pfUI_config.global[key]
+    return pfUI_config.global[key]
 end
 
--- Safely get DQB configuration.
+
 function DQB:GetConfig(module, key, default)
-  if not pfUI_config
+    if not pfUI_config
     or not pfUI_config.dqb
     or not pfUI_config.dqb[module]
     or pfUI_config.dqb[module][key] == nil then
-    return default
-  end
+        return default
+    end
 
-  return pfUI_config.dqb[module][key]
+    return pfUI_config.dqb[module][key]
 end
 
--- Set DQB configuration.
+
 function DQB:SetConfig(module, key, value)
-  if not pfUI_config then
-    pfUI_config = {}
-  end
+    if not pfUI_config then
+        pfUI_config = {}
+    end
 
-  if not pfUI_config.dqb then
-    pfUI_config.dqb = {}
-  end
+    if not pfUI_config.dqb then
+        pfUI_config.dqb = {}
+    end
 
-  if not pfUI_config.dqb[module] then
-    pfUI_config.dqb[module] = {}
-  end
+    if not pfUI_config.dqb[module] then
+        pfUI_config.dqb[module] = {}
+    end
 
-  pfUI_config.dqb[module][key] = value
+    pfUI_config.dqb[module][key] = value
 end
 
--- Simple debug helper.
+
+------------------------------------------------------------
+-- Enable / Disable
+------------------------------------------------------------
+
+function DQB:IsEnabled()
+    return self:GetConfig("general", "enable", "1") == "1"
+end
+
+
+function DQB:SetEnabled(enabled)
+    if enabled then
+        self:SetConfig("general", "enable", "1")
+    else
+        self:SetConfig("general", "enable", "0")
+    end
+end
+
+
+------------------------------------------------------------
+-- Debug / chat output
+------------------------------------------------------------
+
 function DQB:Debug(message)
-  if DEFAULT_CHAT_FRAME then
-    DEFAULT_CHAT_FRAME:AddMessage(
-      "|cff33ffccpf|cffffffffUI-DQB|r: " .. tostring(message)
-    )
-  end
+    if DEFAULT_CHAT_FRAME then
+        DEFAULT_CHAT_FRAME:AddMessage(
+            "|cff33ffccpf|cffffffffUI-DQB|r: " .. tostring(message)
+        )
+    end
 end
 
--- Wait until pfUI's configuration and GUI are available.
+
+------------------------------------------------------------
+-- Initialization
+------------------------------------------------------------
+
+function DQB:Initialize()
+    self:Debug(
+        "initialized v" .. tostring(self.version)
+    )
+
+    self:Debug(
+        "status: " .. (self:IsEnabled() and "enabled" or "disabled")
+    )
+end
+
+
+------------------------------------------------------------
+-- Load after WoW variables and pfUI are ready
+------------------------------------------------------------
+
 local loader = CreateFrame("Frame")
 
 loader:RegisterEvent("VARIABLES_LOADED")
+
 loader:SetScript("OnEvent", function()
-  if event ~= "VARIABLES_LOADED" then
-    return
-  end
+    if event ~= "VARIABLES_LOADED" then
+        return
+    end
 
-  if not pfUI then
-    return
-  end
+    if not pfUI then
+        return
+    end
 
-  -- The actual DQB configuration is initialized by config.lua.
-  if DQB.InitializeConfig then
-    DQB:InitializeConfig()
-  end
+    --------------------------------------------------------
+    -- Initialize configuration
+    --------------------------------------------------------
 
-  -- Build the pfUI configuration entries.
-  if DQB.InitializeGUI then
-    DQB:InitializeGUI()
-  end
+    if DQB.InitializeConfig then
+        DQB:InitializeConfig()
+    end
 
-  this:UnregisterAllEvents()
+    --------------------------------------------------------
+    -- Initialize pfUI GUI
+    --------------------------------------------------------
+
+    if DQB.InitializeGUI then
+        DQB:InitializeGUI()
+    end
+
+    --------------------------------------------------------
+    -- Initialize DQB
+    --------------------------------------------------------
+
+    DQB:Initialize()
+
+    --------------------------------------------------------
+    -- We only need VARIABLES_LOADED once
+    --------------------------------------------------------
+
+    this:UnregisterAllEvents()
 end)
