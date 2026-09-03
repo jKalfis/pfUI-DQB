@@ -1,374 +1,229 @@
-------------------------------------------------------------
--- pfUI-DQB
--- gui.lua
---
--- Registers DQB configuration inside pfUI's GUI.
-------------------------------------------------------------
-
 local DQB = pfUI and pfUI.dqb
 
 if not DQB then
     return
 end
 
+------------------------------------------------
+-- Initialize configuration
+------------------------------------------------
 
-------------------------------------------------------------
--- Create DQB configuration menu
-------------------------------------------------------------
-
-function DQB:CreateGUI()
-
-    --------------------------------------------------------
-    -- Make sure pfUI GUI is available
-    --------------------------------------------------------
-
-    if not pfUI.gui then
-        return
-    end
-
-    --------------------------------------------------------
-    -- Make sure our configuration exists
-    --------------------------------------------------------
-
-    if self.InitializeConfig then
-        self:InitializeConfig()
-    end
-
-    if not pfUI_config or not pfUI_config.dqb then
-        return
-    end
-
-    --------------------------------------------------------
-    -- pfUI GUI helpers
-    --------------------------------------------------------
-
-    local CreateConfig = pfUI.gui.CreateConfig
-    local CreateGUIEntry = pfUI.gui.CreateGUIEntry
-
-    if not CreateConfig or not CreateGUIEntry then
-        return
-    end
-
-
-    --------------------------------------------------------
-    -- GENERAL
-    --------------------------------------------------------
-
-    CreateGUIEntry(
-        "DQB",
-        "General",
-        function()
-
-            CreateConfig(
-                nil,
-                "Enable DQB",
-                pfUI_config.dqb.general,
-                "enable",
-                "checkbox"
-            )
-
-        end
-    )
-
-
-    --------------------------------------------------------
-    -- QUEST & GOSSIP
-    --------------------------------------------------------
-
-    CreateGUIEntry(
-        "DQB",
-        "Quest & Gossip",
-        function()
-
-            ------------------------------------------------
-            -- Background
-            ------------------------------------------------
-
-            CreateConfig(
-                nil,
-                "Enable Background",
-                pfUI_config.dqb.questgossip,
-                "background_global",
-                "checkbox"
-            )
-
-            CreateConfig(
-                nil,
-                "Background Color",
-                pfUI_config.dqb.questgossip,
-                "background_color",
-                "color"
-            )
-
-            CreateConfig(
-                nil,
-                "Background Opacity",
-                pfUI_config.dqb.questgossip,
-                "background_alpha",
-                "text"
-            )
-
-
-            ------------------------------------------------
-            -- Text
-            ------------------------------------------------
-
-            CreateConfig(
-                nil,
-                "Enable Text",
-                pfUI_config.dqb.questgossip,
-                "text_global",
-                "checkbox"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Font",
-                pfUI_config.dqb.questgossip,
-                "text_font",
-                "text"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Size",
-                pfUI_config.dqb.questgossip,
-                "text_size",
-                "text"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Style",
-                pfUI_config.dqb.questgossip,
-                "text_style",
-                "text"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Color",
-                pfUI_config.dqb.questgossip,
-                "text_color",
-                "color"
-            )
-
-        end
-    )
-
-
-    --------------------------------------------------------
-    -- QUEST LOG
-    --------------------------------------------------------
-
-    CreateGUIEntry(
-        "DQB",
-        "Quest Log",
-        function()
-
-            ------------------------------------------------
-            -- Background
-            ------------------------------------------------
-
-            CreateConfig(
-                nil,
-                "Enable Background",
-                pfUI_config.dqb.questlog,
-                "background_global",
-                "checkbox"
-            )
-
-            CreateConfig(
-                nil,
-                "Background Color",
-                pfUI_config.dqb.questlog,
-                "background_color",
-                "color"
-            )
-
-            CreateConfig(
-                nil,
-                "Background Opacity",
-                pfUI_config.dqb.questlog,
-                "background_alpha",
-                "text"
-            )
-
-
-            ------------------------------------------------
-            -- Text
-            ------------------------------------------------
-
-            CreateConfig(
-                nil,
-                "Enable Text",
-                pfUI_config.dqb.questlog,
-                "text_global",
-                "checkbox"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Font",
-                pfUI_config.dqb.questlog,
-                "text_font",
-                "text"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Size",
-                pfUI_config.dqb.questlog,
-                "text_size",
-                "text"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Style",
-                pfUI_config.dqb.questlog,
-                "text_style",
-                "text"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Color",
-                pfUI_config.dqb.questlog,
-                "text_color",
-                "color"
-            )
-
-        end
-    )
-
-
-    --------------------------------------------------------
-    -- BOOKS
-    --------------------------------------------------------
-    --
-    -- "Books" corresponds to the original pfUI itemtext.lua
-    -- functionality.
-    --------------------------------------------------------
-
-    CreateGUIEntry(
-        "DQB",
-        "Books",
-        function()
-
-            ------------------------------------------------
-            -- Background
-            ------------------------------------------------
-
-            CreateConfig(
-                nil,
-                "Enable Background",
-                pfUI_config.dqb.itemtext,
-                "background_global",
-                "checkbox"
-            )
-
-            CreateConfig(
-                nil,
-                "Background Color",
-                pfUI_config.dqb.itemtext,
-                "background_color",
-                "color"
-            )
-
-            CreateConfig(
-                nil,
-                "Background Opacity",
-                pfUI_config.dqb.itemtext,
-                "background_alpha",
-                "text"
-            )
-
-
-            ------------------------------------------------
-            -- Text
-            ------------------------------------------------
-
-            CreateConfig(
-                nil,
-                "Enable Text",
-                pfUI_config.dqb.itemtext,
-                "text_global",
-                "checkbox"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Font",
-                pfUI_config.dqb.itemtext,
-                "text_font",
-                "text"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Size",
-                pfUI_config.dqb.itemtext,
-                "text_size",
-                "text"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Style",
-                pfUI_config.dqb.itemtext,
-                "text_style",
-                "text"
-            )
-
-            CreateConfig(
-                nil,
-                "Text Color",
-                pfUI_config.dqb.itemtext,
-                "text_color",
-                "color"
-            )
-
-        end
-    )
-
+if DQB.InitializeConfig then
+    DQB:InitializeConfig()
 end
 
+------------------------------------------------
+-- Helpers
+------------------------------------------------
 
-------------------------------------------------------------
--- Compatibility with core.lua
-------------------------------------------------------------
---
--- core.lua currently calls InitializeGUI().
--- Keep that name as a wrapper around CreateGUI().
-------------------------------------------------------------
+local function CreateModuleConfig(parent, title, config)
 
-function DQB:InitializeGUI()
-    self:CreateGUI()
+    ------------------------------------------------
+    -- Remove Blizzard Skin and apply pfUI Style
+    ------------------------------------------------
+
+    CreateConfig(
+        parent,
+        "Remove Blizzard Skin and apply pfUI Style",
+        config,
+        "pfui_style",
+        "checkbox"
+    )
+
+    ------------------------------------------------
+    -- Fix Fonts
+    ------------------------------------------------
+
+    CreateConfig(
+        parent,
+        "Fix Fonts",
+        config,
+        "fix_fonts",
+        "checkbox"
+    )
+
+    ------------------------------------------------
+    -- Custom
+    ------------------------------------------------
+
+    CreateConfig(
+        parent,
+        "Custom",
+        nil,
+        nil,
+        "header"
+    )
+
+    ------------------------------------------------
+    -- Remove Blizzard Parchment Texture
+    ------------------------------------------------
+
+    CreateConfig(
+        parent,
+        "Remove Blizzard Parchment Texture",
+        config,
+        "remove_parchment",
+        "checkbox"
+    )
+
+    ------------------------------------------------
+    -- Background Color
+    ------------------------------------------------
+
+    CreateConfig(
+        parent,
+        "Background Color",
+        config,
+        "background_color",
+        "color"
+    )
+
+    ------------------------------------------------
+    -- Background Opacity
+    ------------------------------------------------
+
+    CreateConfig(
+        parent,
+        "Background Opacity",
+        config,
+        "background_alpha",
+        "range",
+        0,
+        1,
+        0.05
+    )
+
+    ------------------------------------------------
+    -- Font
+    ------------------------------------------------
+
+    CreateConfig(
+        parent,
+        "Font",
+        config,
+        "font",
+        "dropdown"
+    )
+
+    ------------------------------------------------
+    -- Font Colors
+    ------------------------------------------------
+
+    CreateConfig(
+        parent,
+        "Font Colors",
+        nil,
+        nil,
+        "header"
+    )
+
+    ------------------------------------------------
+    -- Titles
+    ------------------------------------------------
+
+    CreateConfig(
+        parent,
+        "Titles",
+        config,
+        "title_color",
+        "color"
+    )
+
+    ------------------------------------------------
+    -- Text
+    ------------------------------------------------
+
+    CreateConfig(
+        parent,
+        "Text",
+        config,
+        "text_color",
+        "color"
+    )
 end
 
+------------------------------------------------
+-- DQB configuration
+------------------------------------------------
 
-------------------------------------------------------------
--- Initialize GUI after pfUI has loaded
-------------------------------------------------------------
+pfUI:RegisterConfig(
+    "dqb",
+    "DQB",
+    function()
 
-local event = CreateFrame("Frame")
+        ------------------------------------------------
+        -- General
+        ------------------------------------------------
 
-event:RegisterEvent("ADDON_LOADED")
+        CreateConfig(
+            nil,
+            "Enable DQB",
+            pfUI_config.dqb.general,
+            "enable",
+            "checkbox"
+        )
 
-event:SetScript("OnEvent", function()
+        ------------------------------------------------
+        -- Gossip & Quest
+        ------------------------------------------------
 
-    if arg1 == "pfUI" then
+        CreateConfig(
+            nil,
+            "Gossip & Quest",
+            pfUI_config.dqb.gossipquest,
+            nil,
+            "submenu",
+            function()
 
-        if DQB.InitializeConfig then
-            DQB:InitializeConfig()
-        end
+                CreateModuleConfig(
+                    nil,
+                    "Gossip & Quest",
+                    pfUI_config.dqb.gossipquest
+                )
 
-        if DQB.CreateGUI then
-            DQB:CreateGUI()
-        end
+            end
+        )
 
-        event:UnregisterEvent("ADDON_LOADED")
+        ------------------------------------------------
+        -- Quest Log
+        ------------------------------------------------
+
+        CreateConfig(
+            nil,
+            "Quest Log",
+            pfUI_config.dqb.questlog,
+            nil,
+            "submenu",
+            function()
+
+                CreateModuleConfig(
+                    nil,
+                    "Quest Log",
+                    pfUI_config.dqb.questlog
+                )
+
+            end
+        )
+
+        ------------------------------------------------
+        -- Books
+        ------------------------------------------------
+
+        CreateConfig(
+            nil,
+            "Books",
+            pfUI_config.dqb.books,
+            nil,
+            "submenu",
+            function()
+
+                CreateModuleConfig(
+                    nil,
+                    "Books",
+                    pfUI_config.dqb.books
+                )
+
+            end
+        )
     end
-
-end)
+)
