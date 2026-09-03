@@ -1,3 +1,12 @@
+```lua
+------------------------------------------------------------
+-- pfUI-DQB
+-- config.lua
+--
+-- Default configuration for DQB.
+-- GUI registration is handled by GUI.lua.
+------------------------------------------------------------
+
 local DQB = pfUI and pfUI.dqb
 
 if not DQB then
@@ -10,6 +19,10 @@ end
 ------------------------------------------------------------
 
 function DQB:InitializeConfig()
+
+    --------------------------------------------------------
+    -- Root
+    --------------------------------------------------------
 
     if not pfUI_config then
         pfUI_config = {}
@@ -28,8 +41,10 @@ function DQB:InitializeConfig()
         pfUI_config.dqb.general = {}
     end
 
-    if pfUI_config.dqb.general.enable == nil then
-        pfUI_config.dqb.general.enable = "1"
+    local general = pfUI_config.dqb.general
+
+    if general.enable == nil then
+        general.enable = "1"
     end
 
 
@@ -203,4 +218,6 @@ function DQB:InitializeConfig()
     if merchant.text_color == nil then
         merchant.text_color = "ffffff"
     end
+
 end
+```
