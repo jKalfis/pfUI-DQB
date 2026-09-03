@@ -1,259 +1,261 @@
---[[
-  pfUI-DQB
-  Configuration
-]]
+local DQB = pfUI and pfUI.dqb
 
-if not pfUI or not pfUI.dqb then
-  return
+if not DQB then
+    return
 end
 
-local DQB = pfUI.dqb
 
---------------------------------------------------
+------------------------------------------------------------
 -- Default configuration
---------------------------------------------------
+------------------------------------------------------------
 
 function DQB:InitializeConfig()
 
-  -- Make sure the DQB root exists.
-  if not pfUI_config then
-    pfUI_config = {}
-  end
+    if not pfUI_config then
+        pfUI_config = {}
+    end
 
-  if not pfUI_config.dqb then
-    pfUI_config.dqb = {}
-  end
+    if not pfUI_config.dqb then
+        pfUI_config.dqb = {}
+    end
 
-  ------------------------------------------------
-  -- General
-  ------------------------------------------------
 
-  if not pfUI_config.dqb.general then
-    pfUI_config.dqb.general = {}
-  end
+    --------------------------------------------------------
+    -- General
+    --------------------------------------------------------
 
-  local general = pfUI_config.dqb.general
+    if not pfUI_config.dqb.general then
+        pfUI_config.dqb.general = {}
+    end
 
-  if general.enable == nil then
-    general.enable = "1"
-  end
+    if pfUI_config.dqb.general.enable == nil then
+        pfUI_config.dqb.general.enable = "1"
+    end
 
-  ------------------------------------------------
-  -- Quest & Gossip
-  ------------------------------------------------
 
-  if not pfUI_config.dqb.questgossip then
-    pfUI_config.dqb.questgossip = {}
-  end
+    --------------------------------------------------------
+    -- Quest & Gossip
+    --------------------------------------------------------
 
-  local questgossip = pfUI_config.dqb.questgossip
+    if not pfUI_config.dqb.questgossip then
+        pfUI_config.dqb.questgossip = {}
+    end
 
-  -- Background
-  if questgossip.background_global == nil then
-    questgossip.background_global = "1"
-  end
+    local questgossip = pfUI_config.dqb.questgossip
 
-  if questgossip.background_color == nil then
-    questgossip.background_color = "0,0,0,1"
-  end
+    if questgossip.background_global == nil then
+        questgossip.background_global = "1"
+    end
 
-  if questgossip.background_alpha == nil then
-    questgossip.background_alpha = "0.85"
-  end
+    if questgossip.background_color == nil then
+        questgossip.background_color = "000000"
+    end
 
-  -- Text
-  if questgossip.text_global == nil then
-    questgossip.text_global = "1"
-  end
+    if questgossip.background_alpha == nil then
+        questgossip.background_alpha = "0.85"
+    end
 
-  if questgossip.text_font == nil then
-    questgossip.text_font = ""
-  end
+    if questgossip.text_global == nil then
+        questgossip.text_global = "1"
+    end
 
-  if questgossip.text_size == nil then
-    questgossip.text_size = ""
-  end
+    if questgossip.text_font == nil then
+        questgossip.text_font = "Arial"
+    end
 
-  if questgossip.text_style == nil then
-    questgossip.text_style = ""
-  end
+    if questgossip.text_size == nil then
+        questgossip.text_size = "12"
+    end
 
-  if questgossip.text_color == nil then
-    questgossip.text_color = "1,1,1,1"
-  end
+    if questgossip.text_style == nil then
+        questgossip.text_style = ""
+    end
 
-  ------------------------------------------------
-  -- Quest Log
-  ------------------------------------------------
+    if questgossip.text_color == nil then
+        questgossip.text_color = "ffffff"
+    end
 
-  if not pfUI_config.dqb.questlog then
-    pfUI_config.dqb.questlog = {}
-  end
 
-  local questlog = pfUI_config.dqb.questlog
+    --------------------------------------------------------
+    -- Quest Log
+    --------------------------------------------------------
 
-  if questlog.background_global == nil then
-    questlog.background_global = "1"
-  end
+    if not pfUI_config.dqb.questlog then
+        pfUI_config.dqb.questlog = {}
+    end
 
-  if questlog.background_color == nil then
-    questlog.background_color = "0,0,0,1"
-  end
+    local questlog = pfUI_config.dqb.questlog
 
-  if questlog.background_alpha == nil then
-    questlog.background_alpha = "0.85"
-  end
+    if questlog.background_global == nil then
+        questlog.background_global = "1"
+    end
 
-  if questlog.text_global == nil then
-    questlog.text_global = "1"
-  end
+    if questlog.background_color == nil then
+        questlog.background_color = "000000"
+    end
 
-  if questlog.text_font == nil then
-    questlog.text_font = ""
-  end
+    if questlog.background_alpha == nil then
+        questlog.background_alpha = "0.85"
+    end
 
-  if questlog.text_size == nil then
-    questlog.text_size = ""
-  end
+    if questlog.text_global == nil then
+        questlog.text_global = "1"
+    end
 
-  if questlog.text_style == nil then
-    questlog.text_style = ""
-  end
+    if questlog.text_font == nil then
+        questlog.text_font = "Arial"
+    end
 
-  if questlog.text_color == nil then
-    questlog.text_color = "1,1,1,1"
-  end
+    if questlog.text_size == nil then
+        questlog.text_size = "12"
+    end
 
-  ------------------------------------------------
-  -- Item Text
-  ------------------------------------------------
+    if questlog.text_style == nil then
+        questlog.text_style = ""
+    end
 
-  if not pfUI_config.dqb.itemtext then
-    pfUI_config.dqb.itemtext = {}
-  end
+    if questlog.text_color == nil then
+        questlog.text_color = "ffffff"
+    end
 
-  local itemtext = pfUI_config.dqb.itemtext
 
-  if itemtext.background_global == nil then
-    itemtext.background_global = "1"
-  end
+    --------------------------------------------------------
+    -- Item Text
+    --------------------------------------------------------
 
-  if itemtext.background_color == nil then
-    itemtext.background_color = "0,0,0,1"
-  end
+    if not pfUI_config.dqb.itemtext then
+        pfUI_config.dqb.itemtext = {}
+    end
 
-  if itemtext.background_alpha == nil then
-    itemtext.background_alpha = "0.85"
-  end
+    local itemtext = pfUI_config.dqb.itemtext
 
-  if itemtext.text_global == nil then
-    itemtext.text_global = "1"
-  end
+    if itemtext.background_global == nil then
+        itemtext.background_global = "1"
+    end
 
-  if itemtext.text_font == nil then
-    itemtext.text_font = ""
-  end
+    if itemtext.background_color == nil then
+        itemtext.background_color = "000000"
+    end
 
-  if itemtext.text_size == nil then
-    itemtext.text_size = ""
-  end
+    if itemtext.background_alpha == nil then
+        itemtext.background_alpha = "0.85"
+    end
 
-  if itemtext.text_style == nil then
-    itemtext.text_style = ""
-  end
+    if itemtext.text_global == nil then
+        itemtext.text_global = "1"
+    end
 
-  if itemtext.text_color == nil then
-    itemtext.text_color = "1,1,1,1"
-  end
+    if itemtext.text_font == nil then
+        itemtext.text_font = "Arial"
+    end
 
-  ------------------------------------------------
-  -- Merchant
-  ------------------------------------------------
+    if itemtext.text_size == nil then
+        itemtext.text_size = "12"
+    end
 
-  if not pfUI_config.dqb.merchant then
-    pfUI_config.dqb.merchant = {}
-  end
+    if itemtext.text_style == nil then
+        itemtext.text_style = ""
+    end
 
-  local merchant = pfUI_config.dqb.merchant
+    if itemtext.text_color == nil then
+        itemtext.text_color = "ffffff"
+    end
 
-  if merchant.background_global == nil then
-    merchant.background_global = "1"
-  end
 
-  if merchant.background_color == nil then
-    merchant.background_color = "0,0,0,1"
-  end
+    --------------------------------------------------------
+    -- Merchant
+    --------------------------------------------------------
 
-  if merchant.background_alpha == nil then
-    merchant.background_alpha = "0.85"
-  end
+    if not pfUI_config.dqb.merchant then
+        pfUI_config.dqb.merchant = {}
+    end
 
-  if merchant.text_global == nil then
-    merchant.text_global = "1"
-  end
+    local merchant = pfUI_config.dqb.merchant
 
-  if merchant.text_font == nil then
-    merchant.text_font = ""
-  end
+    if merchant.background_global == nil then
+        merchant.background_global = "1"
+    end
 
-  if merchant.text_size == nil then
-    merchant.text_size = ""
-  end
+    if merchant.background_color == nil then
+        merchant.background_color = "000000"
+    end
 
-  if merchant.text_style == nil then
-    merchant.text_style = ""
-  end
+    if merchant.background_alpha == nil then
+        merchant.background_alpha = "0.85"
+    end
 
-  if merchant.text_color == nil then
-    merchant.text_color = "1,1,1,1"
-  end
+    if merchant.text_global == nil then
+        merchant.text_global = "1"
+    end
+
+    if merchant.text_font == nil then
+        merchant.text_font = "Arial"
+    end
+
+    if merchant.text_size == nil then
+        merchant.text_size = "12"
+    end
+
+    if merchant.text_style == nil then
+        merchant.text_style = ""
+    end
+
+    if merchant.text_color == nil then
+        merchant.text_color = "ffffff"
+    end
 end
 
---------------------------------------------------
--- pfUI GUI integration
---------------------------------------------------
+
+------------------------------------------------------------
+-- pfUI configuration GUI
+------------------------------------------------------------
 
 function DQB:InitializeGUI()
 
-  if not pfUI.gui then
-    return
-  end
-
-  if not pfUI.gui.CreateGUIEntry then
-    return
-  end
-
-  -- Prevent duplicate creation.
-  if self.guiInitialized then
-    return
-  end
-
-  self.guiInitialized = true
-
-  ------------------------------------------------
-  -- DQB
-  ------------------------------------------------
-
-  local CreateGUIEntry = pfUI.gui.CreateGUIEntry
-
-  ------------------------------------------------
-  -- General
-  ------------------------------------------------
-
-  CreateGUIEntry(
-    "DQB",
-    nil,
-    function()
-      local CreateConfig = pfUI.gui.CreateConfig
-
-      CreateConfig(
-        nil,
-        "Enable DQB",
-        pfUI_config.dqb.general,
-        "enable",
-        "checkbox"
-      )
+    if not pfUI.gui then
+        return
     end
-  )
 
+    if not pfUI.gui.CreateGUIEntry then
+        return
+    end
+
+    if self.guiInitialized then
+        return
+    end
+
+    self.guiInitialized = true
+
+    local CreateGUIEntry = pfUI.gui.CreateGUIEntry
+
+
+    --------------------------------------------------------
+    -- Main DQB category
+    --------------------------------------------------------
+
+    CreateGUIEntry(
+        "DQB",
+        nil,
+        function()
+
+            local CreateConfig = pfUI.gui.CreateConfig
+
+            if not CreateConfig then
+                return
+            end
+
+
+            ------------------------------------------------
+            -- Enable DQB
+            ------------------------------------------------
+
+            CreateConfig(
+                nil,
+                "Enable DQB",
+                pfUI_config.dqb.general,
+                "enable",
+                "checkbox"
+            )
+        end
+    )
 end
