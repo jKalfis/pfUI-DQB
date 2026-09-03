@@ -1,0 +1,9 @@
+## Interface: 11200
+## Title: |cff33ffccpf|cffffffffUI|cffaaaaaa [Dialog, QuestLog & Books]
+## Author: jKalfis
+## Notes: Quest, Gossip, Quest Log, Books and Merchant visual enhancements for pfUI.
+## Version: 0.1.0
+## Dependencies: pfUI
+
+core.lua
+config.lua
