@@ -1,28 +1,17 @@
-------------------------------------------------------------
 -- pfUI-DQB
 -- config.lua
---
 -- Default configuration for DQB.
 -- GUI registration is handled by gui.lua.
-------------------------------------------------------------
-
 local DQB = pfUI and pfUI.dqb
 
 if not DQB then
     return
 end
 
-
-------------------------------------------------------------
 -- Default configuration
-------------------------------------------------------------
-
 function DQB:InitializeConfig()
 
-    --------------------------------------------------------
     -- Root
-    --------------------------------------------------------
-
     if not pfUI_config then
         pfUI_config = {}
     end
@@ -30,12 +19,8 @@ function DQB:InitializeConfig()
     if not pfUI_config.dqb then
         pfUI_config.dqb = {}
     end
-
-
-    --------------------------------------------------------
+    
     -- GENERAL
-    --------------------------------------------------------
-
     if not pfUI_config.dqb.general then
         pfUI_config.dqb.general = {}
     end
@@ -45,23 +30,15 @@ function DQB:InitializeConfig()
     if general.enable == nil then
         general.enable = "1"
     end
-
-
-    --------------------------------------------------------
+    
     -- QUEST & GOSSIP
-    --------------------------------------------------------
-
     if not pfUI_config.dqb.questgossip then
         pfUI_config.dqb.questgossip = {}
     end
 
     local questgossip = pfUI_config.dqb.questgossip
-
-
-    --------------------------------------------------------
+    
     -- Presets
-    --------------------------------------------------------
-
     if questgossip.pfui_style == nil then
         questgossip.pfui_style = "0"
     end
@@ -69,12 +46,8 @@ function DQB:InitializeConfig()
     if questgossip.fix_fonts == nil then
         questgossip.fix_fonts = "0"
     end
-
-
-    --------------------------------------------------------
+    
     -- Custom
-    --------------------------------------------------------
-
     if not questgossip.custom then
         questgossip.custom = {}
     end
@@ -104,23 +77,15 @@ function DQB:InitializeConfig()
     if custom.text_color == nil then
         custom.text_color = "1,1,1"
     end
-
-
-    --------------------------------------------------------
+    
     -- QUEST LOG
-    --------------------------------------------------------
-
     if not pfUI_config.dqb.questlog then
         pfUI_config.dqb.questlog = {}
     end
 
     local questlog = pfUI_config.dqb.questlog
-
-
-    --------------------------------------------------------
+    
     -- Presets
-    --------------------------------------------------------
-
     if questlog.pfui_style == nil then
         questlog.pfui_style = "0"
     end
@@ -128,12 +93,8 @@ function DQB:InitializeConfig()
     if questlog.fix_fonts == nil then
         questlog.fix_fonts = "0"
     end
-
-
-    --------------------------------------------------------
+    
     -- Custom
-    --------------------------------------------------------
-
     if not questlog.custom then
         questlog.custom = {}
     end
@@ -163,26 +124,16 @@ function DQB:InitializeConfig()
     if custom.text_color == nil then
         custom.text_color = "1,1,1"
     end
-
-
-    --------------------------------------------------------
-    -- BOOKS
-    --------------------------------------------------------
-    --
-    -- Books corresponds to the original pfUI itemtext.lua.
-    --------------------------------------------------------
-
+    
+    -- BOOKS    
+    -- Books corresponds to brues pfUI's itemtext.lua.
     if not pfUI_config.dqb.books then
         pfUI_config.dqb.books = {}
     end
 
     local books = pfUI_config.dqb.books
-
-
-    --------------------------------------------------------
+    
     -- Presets
-    --------------------------------------------------------
-
     if books.pfui_style == nil then
         books.pfui_style = "0"
     end
@@ -190,12 +141,8 @@ function DQB:InitializeConfig()
     if books.fix_fonts == nil then
         books.fix_fonts = "0"
     end
-
-
-    --------------------------------------------------------
+    
     -- Custom
-    --------------------------------------------------------
-
     if not books.custom then
         books.custom = {}
     end
@@ -225,15 +172,9 @@ function DQB:InitializeConfig()
     if custom.text_color == nil then
         custom.text_color = "1,1,1"
     end
-
-
-    --------------------------------------------------------
-    -- MERCHANT
-    --------------------------------------------------------
-    --
+    
+    -- MERCHANT    
     -- Kept untouched for now.
-    --------------------------------------------------------
-
     if not pfUI_config.dqb.merchant then
         pfUI_config.dqb.merchant = {}
     end
