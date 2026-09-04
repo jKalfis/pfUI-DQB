@@ -11,448 +11,24 @@ if not DQB then
     return
 end
 
-------------------------------------------------------------
--- Helpers
-------------------------------------------------------------
-
-local function GetPFUIFont()
-    if pfUI and pfUI.font_default then
-        return pfUI.font_default
-    end
-
-    if pfUI_config
-    and pfUI_config.global
-    and pfUI_config.global.font_default then
-        return pfUI_config.global.font_default
-    end
-
-    return "Interface\\AddOns\\pfUI\\fonts\\Myriad-Pro.ttf"
-end
-
-local function GetPFUIBackgroundColor()
-    if pfUI_config
-    and pfUI_config.global
-    and pfUI_config.global.background_color then
-        return pfUI_config.global.background_color
-    end
-
-    return "0,0,0,1"
-end
-
-local function GetPFUIBackgroundAlpha()
-    if pfUI_config
-    and pfUI_config.global
-    and pfUI_config.global.background_alpha ~= nil then
-        return tostring(pfUI_config.global.background_alpha)
-    end
-
-    return "0.75"
-end
 
 ------------------------------------------------------------
--- Reset pfUI Style
-------------------------------------------------------------
-
-local function ResetPFUIStyle(module)
-
-    if not module then
-        return
-    end
-
-    module.pfui_background_alpha = GetPFUIBackgroundAlpha()
-
-    if pfUI
-    and pfUI.events
-    and pfUI.events.TriggerEvent then
-        pfUI.events:TriggerEvent(
-            "config:changed",
-            module,
-            "pfui_background_alpha"
-        )
-    end
-
-    if pfUI.gui then
-        pfUI.gui.settingChanged = true
-    end
-
-end
-
-------------------------------------------------------------
--- Reset Custom Style
-------------------------------------------------------------
-
-local function ResetCustomStyle(module)
-
-    if not module then
-        return
-    end
-
-    if not module.custom then
-        module.custom = {}
-    end
-
-    local custom = module.custom
-
-    custom.remove_parchment = "1"
-    custom.background_color = GetPFUIBackgroundColor()
-    custom.background_alpha = GetPFUIBackgroundAlpha()
-    custom.font = GetPFUIFont()
-
-    custom.title_color = "1,0.82,0,1"
-    custom.text_color = "1,1,1,1"
-
-    if pfUI
-    and pfUI.events
-    and pfUI.events.TriggerEvent then
-        pfUI.events:TriggerEvent(
-            "config:changed",
-            custom,
-            "remove_parchment"
-        )
-
-        pfUI.events:TriggerEvent(
-            "config:changed",
-            custom,
-            "background_color"
-        )
-
-        pfUI.events:TriggerEvent(
-            "config:changed",
-            custom,
-            "background_alpha"
-        )
-
-        pfUI.events:TriggerEvent(
-            "config:changed",
-            custom,
-            "font"
-        )
-
-        pfUI.events:TriggerEvent(
-            "config:changed",
-            custom,
-            "title_color"
-        )
-
-        pfUI.events:TriggerEvent(
-            "config:changed",
-            custom,
-            "text_color"
-        )
-    end
-
-    if pfUI.gui then
-        pfUI.gui.settingChanged = true
-    end
-
-end
-
-------------------------------------------------------------
--- Update dependency states
-------------------------------------------------------------
-
-local function UpdateModuleState(module, frameRefs)
-
-    if not module or not frameRefs then
-        return
-    end
-
-    local usePFUI = module.use_pfui_style == "1"
-    local useCustom = module.use_custom_style == "1"
-
-    --------------------------------------------------------
-    -- pfUI Style controls
-    --------------------------------------------------------
-
-    if frameRefs.pfuiAlpha then
-
-        if usePFUI then
-            frameRefs.pfuiAlpha.input:Enable()
-            frameRefs.pfuiAlpha.caption:SetTextColor(
-                1, 1, 1, 1
-            )
-        else
-            frameRefs.pfuiAlpha.input:Disable()
-            frameRefs.pfuiAlpha.caption:SetTextColor(
-                0.5, 0.5, 0.5, 1
-            )
-        end
-
-    end
-
-    if frameRefs.resetPFUI then
-
-        if usePFUI then
-            frameRefs.resetPFUI.button:Enable()
-            frameRefs.resetPFUI.caption:SetTextColor(
-                1, 1, 1, 1
-            )
-        else
-            frameRefs.resetPFUI.button:Disable()
-            frameRefs.resetPFUI.caption:SetTextColor(
-                0.5, 0.5, 0.5, 1
-            )
-        end
-
-    end
-
-    --------------------------------------------------------
-    -- Custom Style controls
-    --------------------------------------------------------
-
-    if frameRefs.custom then
-
-        local enabled = useCustom
-
-        for _, frame in pairs(frameRefs.custom) do
-
-            if frame and frame.input then
-
-                if enabled then
-                    frame.input:Enable()
-                else
-                    frame.input:Disable()
-                end
-
-            elseif frame and frame.color then
-
-                if enabled then
-                    frame.color:Enable()
-                else
-                    frame.color:Disable()
-                end
-
-            elseif frame and frame.button then
-
-                if enabled then
-                    frame.button:Enable()
-                else
-                    frame.button:Disable()
-                end
-
-            end
-
-            if frame and frame.caption then
-
-                if enabled then
-                    frame.caption:SetTextColor(
-                        1, 1, 1, 1
-                    )
-                else
-                    frame.caption:SetTextColor(
-                        0.5, 0.5, 0.5, 1
-                    )
-                end
-
-            end
-
-        end
-
-    end
-
-end
-
-------------------------------------------------------------
--- Create one module configuration page
-------------------------------------------------------------
-
-local function CreateModuleConfig(
-    moduleName,
-    module,
-    CreateConfig
-)
-
-    local refs = {
-        custom = {}
-    }
-
-    --------------------------------------------------------
-    -- Use pfUI Style
-    --------------------------------------------------------
-
-    refs.usePFUI = CreateConfig(
-        nil,
-        "Use pfUI Style",
-        module,
-        "use_pfui_style",
-        "checkbox",
-        function()
-
-            if module.use_pfui_style == "1" then
-
-                module.use_custom_style = "0"
-
-            end
-
-            UpdateModuleState(module, refs)
-
-        end
-    )
-
-    --------------------------------------------------------
-    -- pfUI Background Opacity
-    --------------------------------------------------------
-
-    refs.pfuiAlpha = CreateConfig(
-        nil,
-        "pfUI Background Opacity",
-        module,
-        "pfui_background_alpha",
-        "slider"
-    )
-
-    --------------------------------------------------------
-    -- Reset pfUI Default
-    --------------------------------------------------------
-
-    refs.resetPFUI = CreateConfig(
-        nil,
-        "Reset to pfUI Default",
-        module,
-        "reset_pfui",
-        "button",
-        function()
-
-            ResetPFUIStyle(module)
-
-        end
-    )
-
-    --------------------------------------------------------
-    -- Use Custom Style
-    --------------------------------------------------------
-
-    refs.useCustom = CreateConfig(
-        nil,
-        "Use Custom Style",
-        module,
-        "use_custom_style",
-        "checkbox",
-        function()
-
-            if module.use_custom_style == "1" then
-
-                module.use_pfui_style = "0"
-
-            end
-
-            UpdateModuleState(module, refs)
-
-        end
-    )
-
-    --------------------------------------------------------
-    -- Custom:
-    -- Remove Blizzard Parchment Texture
-    --------------------------------------------------------
-
-    refs.custom.parchment = CreateConfig(
-        nil,
-        "Remove Blizzard Parchment Texture",
-        module.custom,
-        "remove_parchment",
-        "checkbox"
-    )
-
-    --------------------------------------------------------
-    -- Custom:
-    -- Background Color
-    --------------------------------------------------------
-
-    refs.custom.backgroundColor = CreateConfig(
-        nil,
-        "Background Color",
-        module.custom,
-        "background_color",
-        "color"
-    )
-
-    --------------------------------------------------------
-    -- Custom:
-    -- Background Opacity
-    --------------------------------------------------------
-
-    refs.custom.backgroundAlpha = CreateConfig(
-        nil,
-        "Background Opacity",
-        module.custom,
-        "background_alpha",
-        "slider"
-    )
-
-    --------------------------------------------------------
-    -- Custom:
-    -- Fonts
-    --------------------------------------------------------
-
-    refs.custom.font = CreateConfig(
-        nil,
-        "Fonts",
-        module.custom,
-        "font",
-        "font"
-    )
-
-    --------------------------------------------------------
-    -- Custom:
-    -- Title Color
-    --------------------------------------------------------
-
-    refs.custom.titleColor = CreateConfig(
-        nil,
-        "Title Color",
-        module.custom,
-        "title_color",
-        "color"
-    )
-
-    --------------------------------------------------------
-    -- Custom:
-    -- Text Color
-    --------------------------------------------------------
-
-    refs.custom.textColor = CreateConfig(
-        nil,
-        "Text Color",
-        module.custom,
-        "text_color",
-        "color"
-    )
-
-    --------------------------------------------------------
-    -- Reset Custom Values
-    --------------------------------------------------------
-
-    refs.custom.reset = CreateConfig(
-        nil,
-        "Reset Custom Values",
-        module.custom,
-        "reset",
-        "button",
-        function()
-
-            ResetCustomStyle(module)
-
-        end
-    )
-
-    --------------------------------------------------------
-    -- Initial dependency state
-    --------------------------------------------------------
-
-    UpdateModuleState(module, refs)
-
-end
-
-------------------------------------------------------------
--- Create GUI
+-- Create DQB configuration menu
 ------------------------------------------------------------
 
 function DQB:CreateGUI()
 
+    --------------------------------------------------------
+    -- Make sure pfUI GUI is available
+    --------------------------------------------------------
+
     if not pfUI.gui then
         return
     end
+
+    --------------------------------------------------------
+    -- Make sure our configuration exists
+    --------------------------------------------------------
 
     if self.InitializeConfig then
         self:InitializeConfig()
@@ -462,6 +38,10 @@ function DQB:CreateGUI()
         return
     end
 
+    --------------------------------------------------------
+    -- pfUI GUI helpers
+    --------------------------------------------------------
+
     local CreateConfig = pfUI.gui.CreateConfig
     local CreateGUIEntry = pfUI.gui.CreateGUIEntry
 
@@ -469,112 +49,807 @@ function DQB:CreateGUI()
         return
     end
 
+
     --------------------------------------------------------
-    -- General
+    -- CUSTOM OPACITY SLIDER
+    --------------------------------------------------------
+    --
+    -- pfUI's CreateConfig does not provide a slider widget.
+    -- We create the normal pfUI configuration row first
+    -- and replace its EditBox with our own Slider.
+    --
+    -- This is the same working slider implementation
+    -- already used by DQB.
     --------------------------------------------------------
 
-    CreateGUIEntry(
-        "DQB",
-        "General",
-        function()
+    local function CreateOpacitySlider(caption, category, config)
 
-            CreateConfig(
-                nil,
-                "Enable DQB",
-                pfUI_config.dqb.general,
-                "enable",
-                "checkbox"
+        ----------------------------------------------------
+        -- Create the normal pfUI config row.
+        ----------------------------------------------------
+
+        local frame = CreateConfig(
+            nil,
+            caption,
+            category,
+            config,
+            "text"
+        )
+
+        if not frame then
+            return
+        end
+
+        ----------------------------------------------------
+        -- Hide the normal text input.
+        ----------------------------------------------------
+
+        if frame.input then
+            frame.input:Hide()
+        end
+
+
+        ----------------------------------------------------
+        -- Create slider.
+        ----------------------------------------------------
+
+        local slider = CreateFrame(
+            "Slider",
+            nil,
+            frame
+        )
+
+        slider:SetWidth(180)
+        slider:SetHeight(10)
+
+        slider:SetOrientation("HORIZONTAL")
+
+        slider:SetMinMaxValues(0, 1)
+
+
+        ----------------------------------------------------
+        -- Thumb texture
+        ----------------------------------------------------
+
+        if pfUI.media and pfUI.media["img:col"] then
+
+            slider:SetThumbTexture(
+                pfUI.media["img:col"]
             )
 
         end
-    )
 
-    --------------------------------------------------------
-    -- Quest & Gossip
-    --------------------------------------------------------
 
-    CreateGUIEntry(
-        "DQB",
-        "Quest & Gossip",
-        function()
+        ----------------------------------------------------
+        -- Position slider.
+        ----------------------------------------------------
 
-            CreateModuleConfig(
-                "questgossip",
-                pfUI_config.dqb.questgossip,
-                CreateConfig
-            )
+        slider:SetPoint(
+            "RIGHT",
+            frame,
+            "RIGHT",
+            -38,
+            0
+        )
 
-        end
-    )
 
-    --------------------------------------------------------
-    -- Quest Log
-    --------------------------------------------------------
+        ----------------------------------------------------
+        -- Try to apply pfUI slider skin.
+        ----------------------------------------------------
 
-    CreateGUIEntry(
-        "DQB",
-        "Quest Log",
-        function()
+        if pfUI.api and pfUI.api.SkinSlider then
 
-            CreateModuleConfig(
-                "questlog",
-                pfUI_config.dqb.questlog,
-                CreateConfig
-            )
+            local thumb = slider:GetThumbTexture()
+
+            if thumb then
+                pfUI.api.SkinSlider(slider)
+            end
 
         end
-    )
 
-    --------------------------------------------------------
-    -- Books
-    --------------------------------------------------------
 
-    CreateGUIEntry(
-        "DQB",
-        "Books",
-        function()
+        ----------------------------------------------------
+        -- Current value.
+        ----------------------------------------------------
 
-            CreateModuleConfig(
-                "books",
-                pfUI_config.dqb.books,
-                CreateConfig
-            )
+        local value = tonumber(category[config])
 
-        end
-    )
-
-end
-
-------------------------------------------------------------
--- Initialize GUI
-------------------------------------------------------------
-
-function DQB:InitializeGUI()
-    self:CreateGUI()
-end
-
-------------------------------------------------------------
--- Wait for pfUI
-------------------------------------------------------------
-
-local event = CreateFrame("Frame")
-
-event:RegisterEvent("ADDON_LOADED")
-
-event:SetScript("OnEvent", function()
-
-    if arg1 == "pfUI" then
-
-        if DQB.InitializeConfig then
-            DQB:InitializeConfig()
+        if not value then
+            value = 0.75
         end
 
-        if DQB.CreateGUI then
-            DQB:CreateGUI()
+        if value < 0 then
+            value = 0
+        elseif value > 1 then
+            value = 1
         end
 
-        event:UnregisterEvent("ADDON_LOADED")
+        slider:SetValue(value)
+
+
+        ----------------------------------------------------
+        -- Value text.
+        ----------------------------------------------------
+
+        local valueText = frame:CreateFontString(
+            nil,
+            "OVERLAY"
+        )
+
+        valueText:SetFont(
+            pfUI.font_default,
+            pfUI_config.global.font_size - 1,
+            "OUTLINE"
+        )
+
+        valueText:SetJustifyH("RIGHT")
+
+        valueText:SetWidth(34)
+
+        valueText:SetPoint(
+            "RIGHT",
+            frame,
+            "RIGHT",
+            0,
+            0
+        )
+
+        valueText:SetText(
+            math.floor(value * 100 + 0.5) .. "%"
+        )
+
+
+        ----------------------------------------------------
+        -- Slider value changed.
+        ----------------------------------------------------
+
+        slider:SetScript(
+            "OnValueChanged",
+            function()
+
+                local raw = this:GetValue()
+
+                ------------------------------------------------
+                -- Round to 5%.
+                ------------------------------------------------
+
+                local newValue =
+                    math.floor(raw * 20 + 0.5) / 20
+
+                if newValue < 0 then
+                    newValue = 0
+                elseif newValue > 1 then
+                    newValue = 1
+                end
+
+
+                ------------------------------------------------
+                -- Prevent unnecessary recursion.
+                ------------------------------------------------
+
+                if math.abs(raw - newValue) > 0.001 then
+
+                    this:SetValue(newValue)
+
+                    return
+
+                end
+
+
+                ------------------------------------------------
+                -- Save value.
+                ------------------------------------------------
+
+                category[config] = string.format(
+                    "%.2f",
+                    newValue
+                )
+
+
+                ------------------------------------------------
+                -- Update visible percentage.
+                ------------------------------------------------
+
+                if valueText then
+
+                    valueText:SetText(
+                        math.floor(newValue * 100 + 0.5)
+                        .. "%"
+                    )
+
+                end
+
+
+                ------------------------------------------------
+                -- Tell pfUI that configuration changed.
+                ------------------------------------------------
+
+                if pfUI.events
+                    and pfUI.events.TriggerEvent then
+
+                    pfUI.events:TriggerEvent(
+                        "config:changed",
+                        category,
+                        config
+                    )
+
+                else
+
+                    pfUI.gui.settingChanged = true
+
+                end
+
+            end
+        )
+
+
+        ----------------------------------------------------
+        -- Mouse wheel support.
+        ----------------------------------------------------
+
+        slider:EnableMouseWheel(true)
+
+        slider:SetScript(
+            "OnMouseWheel",
+            function()
+
+                local current = this:GetValue()
+
+                local step = 0.05
+
+                if arg1 > 0 then
+                    current = current + step
+                else
+                    current = current - step
+                end
+
+                if current < 0 then
+                    current = 0
+                elseif current > 1 then
+                    current = 1
+                end
+
+                this:SetValue(current)
+
+            end
+        )
+
+
+        ----------------------------------------------------
+        -- Store references.
+        ----------------------------------------------------
+
+        frame.input = slider
+        frame.value = valueText
+
+        return frame
 
     end
 
-end)
+
+    --------------------------------------------------------
+    -- DEPENDENCY HELPERS
+    --------------------------------------------------------
+
+    local function SetFrameEnabled(frame, enabled)
+
+        if not frame then
+            return
+        end
+
+
+        ----------------------------------------------------
+        -- Main input.
+        ----------------------------------------------------
+
+        if frame.input then
+
+            if enabled then
+                frame.input:Enable()
+            else
+                frame.input:Disable()
+            end
+
+        end
+
+
+        ----------------------------------------------------
+        -- Color picker.
+        ----------------------------------------------------
+
+        if frame.color then
+
+            if enabled then
+                frame.color:Enable()
+            else
+                frame.color:Disable()
+            end
+
+        end
+
+
+        ----------------------------------------------------
+        -- Button.
+        ----------------------------------------------------
+
+        if frame.button then
+
+            if enabled then
+                frame.button:Enable()
+            else
+                frame.button:Disable()
+            end
+
+        end
+
+
+        ----------------------------------------------------
+        -- Caption.
+        ----------------------------------------------------
+
+        if frame.caption then
+
+            if enabled then
+
+                frame.caption:SetTextColor(
+                    1, 1, 1, 1
+                )
+
+            else
+
+                frame.caption:SetTextColor(
+                    0.5, 0.5, 0.5, 1
+                )
+
+            end
+
+        end
+
+
+        ----------------------------------------------------
+        -- Slider value.
+        ----------------------------------------------------
+
+        if frame.value then
+
+            if enabled then
+
+                frame.value:SetTextColor(
+                    1, 1, 1, 1
+                )
+
+            else
+
+                frame.value:SetTextColor(
+                    0.5, 0.5, 0.5, 1
+                )
+
+            end
+
+        end
+
+    end
+
+
+    --------------------------------------------------------
+    -- Find the main clickable input of a config frame.
+    --------------------------------------------------------
+
+    local function GetConfigInput(frame)
+
+        if not frame then
+            return nil
+        end
+
+        if frame.input then
+            return frame.input
+        end
+
+        if frame.color then
+            return frame.color
+        end
+
+        if frame.button then
+            return frame.button
+        end
+
+        return nil
+
+    end
+
+
+    --------------------------------------------------------
+    -- Reset PFUI STYLE
+    --------------------------------------------------------
+
+    local function ResetPFUIStyle(module)
+
+        if not module then
+            return
+        end
+
+        ----------------------------------------------------
+        -- Get current pfUI global alpha.
+        ----------------------------------------------------
+
+        local value = nil
+
+        if pfUI_config
+            and pfUI_config.global
+            and pfUI_config.global.background_alpha ~= nil then
+
+            value = tostring(
+                pfUI_config.global.background_alpha
+            )
+
+        end
+
+        if not value then
+            value = "0.75"
+        end
+
+
+        ----------------------------------------------------
+        -- Save.
+        ----------------------------------------------------
+
+        module.pfui_background_alpha = value
+
+
+        ----------------------------------------------------
+        -- Notify DQB / pfUI.
+        ----------------------------------------------------
+
+        if pfUI.events
+            and pfUI.events.TriggerEvent then
+
+            pfUI.events:TriggerEvent(
+                "config:changed",
+                module,
+                "pfui_background_alpha"
+            )
+
+        else
+
+            pfUI.gui.settingChanged = true
+
+        end
+
+    end
+
+
+    --------------------------------------------------------
+    -- RESET CUSTOM STYLE
+    --------------------------------------------------------
+
+    local function ResetCustomStyle(module)
+
+        if not module then
+            return
+        end
+
+        if not module.custom then
+            module.custom = {}
+        end
+
+        local custom = module.custom
+
+
+        ----------------------------------------------------
+        -- Parchment
+        ----------------------------------------------------
+
+        custom.remove_parchment = "1"
+
+
+        ----------------------------------------------------
+        -- Background color
+        ----------------------------------------------------
+
+        if pfUI_config
+            and pfUI_config.global
+            and pfUI_config.global.background_color then
+
+            custom.background_color =
+                pfUI_config.global.background_color
+
+        else
+
+            custom.background_color =
+                "0,0,0,1"
+
+        end
+
+
+        ----------------------------------------------------
+        -- Background opacity
+        ----------------------------------------------------
+
+        if pfUI_config
+            and pfUI_config.global
+            and pfUI_config.global.background_alpha ~= nil then
+
+            custom.background_alpha =
+                tostring(
+                    pfUI_config.global.background_alpha
+                )
+
+        else
+
+            custom.background_alpha =
+                "0.75"
+
+        end
+
+
+        ----------------------------------------------------
+        -- Font
+        ----------------------------------------------------
+
+        if pfUI.font_default then
+
+            custom.font =
+                pfUI.font_default
+
+        elseif pfUI_config
+            and pfUI_config.global
+            and pfUI_config.global.font_default then
+
+            custom.font =
+                pfUI_config.global.font_default
+
+        else
+
+            custom.font =
+                "Interface\\AddOns\\pfUI\\fonts\\Myriad-Pro.ttf"
+
+        end
+
+
+        ----------------------------------------------------
+        -- Title color
+        ----------------------------------------------------
+
+        custom.title_color =
+            "1,0.82,0,1"
+
+
+        ----------------------------------------------------
+        -- Text color
+        ----------------------------------------------------
+
+        custom.text_color =
+            "1,1,1,1"
+
+
+        ----------------------------------------------------
+        -- Notify.
+        ----------------------------------------------------
+
+        if pfUI.events
+            and pfUI.events.TriggerEvent then
+
+            pfUI.events:TriggerEvent(
+                "config:changed",
+                custom,
+                "remove_parchment"
+            )
+
+            pfUI.events:TriggerEvent(
+                "config:changed",
+                custom,
+                "background_color"
+            )
+
+            pfUI.events:TriggerEvent(
+                "config:changed",
+                custom,
+                "background_alpha"
+            )
+
+            pfUI.events:TriggerEvent(
+                "config:changed",
+                custom,
+                "font"
+            )
+
+            pfUI.events:TriggerEvent(
+                "config:changed",
+                custom,
+                "title_color"
+            )
+
+            pfUI.events:TriggerEvent(
+                "config:changed",
+                custom,
+                "text_color"
+            )
+
+        else
+
+            pfUI.gui.settingChanged = true
+
+        end
+
+    end
+
+
+    --------------------------------------------------------
+    -- UPDATE MODULE DEPENDENCIES
+    --------------------------------------------------------
+
+    local function UpdateModuleState(module, refs)
+
+        if not module or not refs then
+            return
+        end
+
+
+        ----------------------------------------------------
+        -- Current state.
+        ----------------------------------------------------
+
+        local usePFUI =
+            module.use_pfui_style == "1"
+
+        local useCustom =
+            module.use_custom_style == "1"
+
+
+        ----------------------------------------------------
+        -- PFUI STYLE
+        ----------------------------------------------------
+
+        SetFrameEnabled(
+            refs.pfuiAlpha,
+            usePFUI
+        )
+
+        SetFrameEnabled(
+            refs.resetPFUI,
+            usePFUI
+        )
+
+
+        ----------------------------------------------------
+        -- CUSTOM STYLE
+        ----------------------------------------------------
+
+        SetFrameEnabled(
+            refs.custom.parchment,
+            useCustom
+        )
+
+        SetFrameEnabled(
+            refs.custom.backgroundColor,
+            useCustom
+        )
+
+        SetFrameEnabled(
+            refs.custom.backgroundAlpha,
+            useCustom
+        )
+
+        SetFrameEnabled(
+            refs.custom.font,
+            useCustom
+        )
+
+        SetFrameEnabled(
+            refs.custom.titleColor,
+            useCustom
+        )
+
+        SetFrameEnabled(
+            refs.custom.textColor,
+            useCustom
+        )
+
+        SetFrameEnabled(
+            refs.custom.reset,
+            useCustom
+        )
+
+    end
+
+
+    --------------------------------------------------------
+    -- CREATE ONE MODULE CONFIGURATION
+    --------------------------------------------------------
+
+    local function CreateModuleConfig(
+        module,
+        CreateConfig
+    )
+
+        local refs = {
+            custom = {}
+        }
+
+
+        ----------------------------------------------------
+        -- USE PFUI STYLE
+        ----------------------------------------------------
+
+        refs.usePFUI = CreateConfig(
+            nil,
+            "Use pfUI Style",
+            module,
+            "use_pfui_style",
+            "checkbox"
+        )
+
+
+        ----------------------------------------------------
+        -- PFUI BACKGROUND OPACITY
+        ----------------------------------------------------
+
+        refs.pfuiAlpha = CreateOpacitySlider(
+            "pfUI Background Opacity",
+            module,
+            "pfui_background_alpha"
+        )
+
+
+        ----------------------------------------------------
+        -- RESET PFUI DEFAULT
+        ----------------------------------------------------
+
+        refs.resetPFUI = CreateConfig(
+            nil,
+            "Reset to pfUI Default",
+            module,
+            "reset_pfui",
+            "button",
+            function()
+
+                ResetPFUIStyle(module)
+
+                if refs.pfuiAlpha
+                    and refs.pfuiAlpha.input then
+
+                    local value =
+                        tonumber(
+                            module.pfui_background_alpha
+                        )
+
+                    if value then
+                        refs.pfuiAlpha.input:SetValue(
+                            value
+                        )
+                    end
+
+                end
+
+            end
+        )
+
+
+        ----------------------------------------------------
+        -- USE CUSTOM STYLE
+        ----------------------------------------------------
+
+        refs.useCustom = CreateConfig(
+            nil,
+            "Use Custom Style",
+            module,
+            "use_custom_style",
+            "checkbox"
+        )
+
+
+        ----------------------------------------------------
+        -- CUSTOM:
+        -- Remove Blizzard Parchment Texture
+        ----------------------------------------------------
+
+        refs.custom.parchment = CreateConfig(
+            nil,
+            "Remove Blizzard Parchment Texture",
+            module.custom,
+            "remove_parchment",
+            "checkbox"
+        )
+
+
+        ------
