@@ -1,6 +1,5 @@
 -- pfUI-DQB
 -- gui.lua
---
 -- Registers DQB configuration inside pfUI's GUI.
 local DQB = pfUI and pfUI.dqb
 
@@ -33,25 +32,13 @@ function DQB:CreateGUI()
         return
     end
 
-
-    --------------------------------------------------------
     -- CUSTOM OPACITY SLIDER
-    --------------------------------------------------------
-    --
     -- pfUI's CreateConfig does not provide a slider widget.
     -- We create the normal pfUI configuration row first
     -- and replace its EditBox with our own Slider.
-    --
-    -- This is the same working slider implementation
-    -- already used by DQB.
-    --------------------------------------------------------
-
     local function CreateOpacitySlider(caption, category, config)
 
-        ----------------------------------------------------
         -- Create the normal pfUI config row.
-        ----------------------------------------------------
-
         local frame = CreateConfig(
             nil,
             caption,
@@ -64,19 +51,12 @@ function DQB:CreateGUI()
             return
         end
 
-        ----------------------------------------------------
         -- Hide the normal text input.
-        ----------------------------------------------------
-
         if frame.input then
             frame.input:Hide()
         end
-
-
-        ----------------------------------------------------
+        
         -- Create slider.
-        ----------------------------------------------------
-
         local slider = CreateFrame(
             "Slider",
             nil,
@@ -90,11 +70,7 @@ function DQB:CreateGUI()
 
         slider:SetMinMaxValues(0, 1)
 
-
-        ----------------------------------------------------
         -- Thumb texture
-        ----------------------------------------------------
-
         if pfUI.media and pfUI.media["img:col"] then
 
             slider:SetThumbTexture(
@@ -103,11 +79,7 @@ function DQB:CreateGUI()
 
         end
 
-
-        ----------------------------------------------------
         -- Position slider.
-        ----------------------------------------------------
-
         slider:SetPoint(
             "RIGHT",
             frame,
@@ -116,11 +88,7 @@ function DQB:CreateGUI()
             0
         )
 
-
-        ----------------------------------------------------
         -- Try to apply pfUI slider skin.
-        ----------------------------------------------------
-
         if pfUI.api and pfUI.api.SkinSlider then
 
             local thumb = slider:GetThumbTexture()
@@ -131,11 +99,7 @@ function DQB:CreateGUI()
 
         end
 
-
-        ----------------------------------------------------
         -- Current value.
-        ----------------------------------------------------
-
         local value = tonumber(category[config])
 
         if not value then
@@ -150,11 +114,7 @@ function DQB:CreateGUI()
 
         slider:SetValue(value)
 
-
-        ----------------------------------------------------
         -- Value text.
-        ----------------------------------------------------
-
         local valueText = frame:CreateFontString(
             nil,
             "OVERLAY"
@@ -182,21 +142,14 @@ function DQB:CreateGUI()
             math.floor(value * 100 + 0.5) .. "%"
         )
 
-
-        ----------------------------------------------------
         -- Slider value changed.
-        ----------------------------------------------------
-
         slider:SetScript(
             "OnValueChanged",
             function()
 
                 local raw = this:GetValue()
 
-                ------------------------------------------------
                 -- Round to 5%.
-                ------------------------------------------------
-
                 local newValue =
                     math.floor(raw * 20 + 0.5) / 20
 
@@ -206,11 +159,7 @@ function DQB:CreateGUI()
                     newValue = 1
                 end
 
-
-                ------------------------------------------------
                 -- Prevent unnecessary recursion.
-                ------------------------------------------------
-
                 if math.abs(raw - newValue) > 0.001 then
 
                     this:SetValue(newValue)
@@ -219,21 +168,13 @@ function DQB:CreateGUI()
 
                 end
 
-
-                ------------------------------------------------
                 -- Save value.
-                ------------------------------------------------
-
                 category[config] = string.format(
                     "%.2f",
                     newValue
                 )
 
-
-                ------------------------------------------------
                 -- Update visible percentage.
-                ------------------------------------------------
-
                 if valueText then
 
                     valueText:SetText(
@@ -243,11 +184,7 @@ function DQB:CreateGUI()
 
                 end
 
-
-                ------------------------------------------------
                 -- Tell pfUI that configuration changed.
-                ------------------------------------------------
-
                 if pfUI.events
                     and pfUI.events.TriggerEvent then
 
@@ -266,11 +203,7 @@ function DQB:CreateGUI()
             end
         )
 
-
-        ----------------------------------------------------
         -- Mouse wheel support.
-        ----------------------------------------------------
-
         slider:EnableMouseWheel(true)
 
         slider:SetScript(
@@ -298,11 +231,7 @@ function DQB:CreateGUI()
             end
         )
 
-
-        ----------------------------------------------------
         -- Store references.
-        ----------------------------------------------------
-
         frame.input = slider
         frame.value = valueText
 
@@ -310,22 +239,14 @@ function DQB:CreateGUI()
 
     end
 
-
-    --------------------------------------------------------
     -- DEPENDENCY HELPERS
-    --------------------------------------------------------
-
     local function SetFrameEnabled(frame, enabled)
 
         if not frame then
             return
         end
 
-
-        ----------------------------------------------------
         -- Main input.
-        ----------------------------------------------------
-
         if frame.input then
 
             if enabled then
@@ -336,11 +257,7 @@ function DQB:CreateGUI()
 
         end
 
-
-        ----------------------------------------------------
         -- Color picker.
-        ----------------------------------------------------
-
         if frame.color then
 
             if enabled then
@@ -351,11 +268,7 @@ function DQB:CreateGUI()
 
         end
 
-
-        ----------------------------------------------------
         -- Button.
-        ----------------------------------------------------
-
         if frame.button then
 
             if enabled then
@@ -366,11 +279,7 @@ function DQB:CreateGUI()
 
         end
 
-
-        ----------------------------------------------------
         -- Caption.
-        ----------------------------------------------------
-
         if frame.caption then
 
             if enabled then
@@ -389,11 +298,7 @@ function DQB:CreateGUI()
 
         end
 
-
-        ----------------------------------------------------
         -- Slider value.
-        ----------------------------------------------------
-
         if frame.value then
 
             if enabled then
@@ -414,11 +319,7 @@ function DQB:CreateGUI()
 
     end
 
-
-    --------------------------------------------------------
     -- Find the main clickable input of a config frame.
-    --------------------------------------------------------
-
     local function GetConfigInput(frame)
 
         if not frame then
@@ -441,21 +342,14 @@ function DQB:CreateGUI()
 
     end
 
-
-    --------------------------------------------------------
     -- Reset PFUI STYLE
-    --------------------------------------------------------
-
     local function ResetPFUIStyle(module)
 
         if not module then
             return
         end
 
-        ----------------------------------------------------
         -- Get current pfUI global alpha.
-        ----------------------------------------------------
-
         local value = nil
 
         if pfUI_config
@@ -472,18 +366,10 @@ function DQB:CreateGUI()
             value = "0.75"
         end
 
-
-        ----------------------------------------------------
         -- Save.
-        ----------------------------------------------------
-
         module.pfui_background_alpha = value
 
-
-        ----------------------------------------------------
         -- Notify DQB / pfUI.
-        ----------------------------------------------------
-
         if pfUI.events
             and pfUI.events.TriggerEvent then
 
@@ -501,11 +387,7 @@ function DQB:CreateGUI()
 
     end
 
-
-    --------------------------------------------------------
     -- RESET CUSTOM STYLE
-    --------------------------------------------------------
-
     local function ResetCustomStyle(module)
 
         if not module then
@@ -518,18 +400,10 @@ function DQB:CreateGUI()
 
         local custom = module.custom
 
-
-        ----------------------------------------------------
         -- Parchment
-        ----------------------------------------------------
-
         custom.remove_parchment = "1"
 
-
-        ----------------------------------------------------
         -- Background color
-        ----------------------------------------------------
-
         if pfUI_config
             and pfUI_config.global
             and pfUI_config.global.background_color then
@@ -544,11 +418,7 @@ function DQB:CreateGUI()
 
         end
 
-
-        ----------------------------------------------------
         -- Background opacity
-        ----------------------------------------------------
-
         if pfUI_config
             and pfUI_config.global
             and pfUI_config.global.background_alpha ~= nil then
@@ -565,11 +435,7 @@ function DQB:CreateGUI()
 
         end
 
-
-        ----------------------------------------------------
         -- Font
-        ----------------------------------------------------
-
         if pfUI.font_default then
 
             custom.font =
@@ -589,27 +455,13 @@ function DQB:CreateGUI()
 
         end
 
-
-        ----------------------------------------------------
         -- Title color
-        ----------------------------------------------------
+        custom.title_color = "1,0.82,0,1"
 
-        custom.title_color =
-            "1,0.82,0,1"
-
-
-        ----------------------------------------------------
         -- Text color
-        ----------------------------------------------------
+        custom.text_color = "1,1,1,1"
 
-        custom.text_color =
-            "1,1,1,1"
-
-
-        ----------------------------------------------------
         -- Notify.
-        ----------------------------------------------------
-
         if pfUI.events
             and pfUI.events.TriggerEvent then
 
@@ -657,33 +509,21 @@ function DQB:CreateGUI()
 
     end
 
-
-    --------------------------------------------------------
     -- UPDATE MODULE DEPENDENCIES
-    --------------------------------------------------------
-
     local function UpdateModuleState(module, refs)
 
         if not module or not refs then
             return
         end
 
-
-        ----------------------------------------------------
         -- Current state.
-        ----------------------------------------------------
-
         local usePFUI =
             module.use_pfui_style == "1"
 
         local useCustom =
             module.use_custom_style == "1"
 
-
-        ----------------------------------------------------
         -- PFUI STYLE
-        ----------------------------------------------------
-
         SetFrameEnabled(
             refs.pfuiAlpha,
             usePFUI
@@ -694,11 +534,7 @@ function DQB:CreateGUI()
             usePFUI
         )
 
-
-        ----------------------------------------------------
         -- CUSTOM STYLE
-        ----------------------------------------------------
-
         SetFrameEnabled(
             refs.custom.parchment,
             useCustom
@@ -736,11 +572,7 @@ function DQB:CreateGUI()
 
     end
 
-
-    --------------------------------------------------------
     -- CREATE ONE MODULE CONFIGURATION
-    --------------------------------------------------------
-
     local function CreateModuleConfig(
         module,
         CreateConfig
@@ -750,11 +582,7 @@ function DQB:CreateGUI()
             custom = {}
         }
 
-
-        ----------------------------------------------------
         -- USE PFUI STYLE
-        ----------------------------------------------------
-
         refs.usePFUI = CreateConfig(
             nil,
             "Use pfUI Style",
@@ -763,22 +591,14 @@ function DQB:CreateGUI()
             "checkbox"
         )
 
-
-        ----------------------------------------------------
         -- PFUI BACKGROUND OPACITY
-        ----------------------------------------------------
-
         refs.pfuiAlpha = CreateOpacitySlider(
             "pfUI Background Opacity",
             module,
             "pfui_background_alpha"
         )
 
-
-        ----------------------------------------------------
         -- RESET PFUI DEFAULT
-        ----------------------------------------------------
-
         refs.resetPFUI = CreateConfig(
             nil,
             "Reset to pfUI Default",
@@ -808,11 +628,7 @@ function DQB:CreateGUI()
             end
         )
 
-
-        ----------------------------------------------------
         -- USE CUSTOM STYLE
-        ----------------------------------------------------
-
         refs.useCustom = CreateConfig(
             nil,
             "Use Custom Style",
@@ -821,12 +637,8 @@ function DQB:CreateGUI()
             "checkbox"
         )
 
-
-        ----------------------------------------------------
         -- CUSTOM:
         -- Remove Blizzard Parchment Texture
-        ----------------------------------------------------
-
         refs.custom.parchment = CreateConfig(
             nil,
             "Remove Blizzard Parchment Texture",
@@ -835,12 +647,8 @@ function DQB:CreateGUI()
             "checkbox"
         )
 
-
-        ----------------------------------------------------
         -- CUSTOM:
         -- Background Color
-        ----------------------------------------------------
-
         refs.custom.backgroundColor = CreateConfig(
             nil,
             "Background Color",
@@ -849,12 +657,8 @@ function DQB:CreateGUI()
             "color"
         )
 
-
-        ----------------------------------------------------
         -- CUSTOM:
         -- Background Opacity
-        ----------------------------------------------------
-
         refs.custom.backgroundAlpha =
             CreateOpacitySlider(
                 "Background Opacity",
@@ -862,12 +666,8 @@ function DQB:CreateGUI()
                 "background_alpha"
             )
 
-
-        ----------------------------------------------------
         -- CUSTOM:
         -- Fonts
-        ----------------------------------------------------
-
         refs.custom.font = CreateConfig(
             nil,
             "Fonts",
@@ -877,12 +677,8 @@ function DQB:CreateGUI()
             pfUI.gui.dropdowns.fonts
         )
 
-
-        ----------------------------------------------------
         -- CUSTOM:
         -- Title Color
-        ----------------------------------------------------
-
         refs.custom.titleColor = CreateConfig(
             nil,
             "Title Color",
@@ -891,12 +687,8 @@ function DQB:CreateGUI()
             "color"
         )
 
-
-        ----------------------------------------------------
         -- CUSTOM:
         -- Text Color
-        ----------------------------------------------------
-
         refs.custom.textColor = CreateConfig(
             nil,
             "Text Color",
@@ -905,11 +697,7 @@ function DQB:CreateGUI()
             "color"
         )
 
-
-        ----------------------------------------------------
         -- RESET CUSTOM VALUES
-        ----------------------------------------------------
-
         refs.custom.reset = CreateConfig(
             nil,
             "Reset Custom Values",
@@ -923,25 +711,16 @@ function DQB:CreateGUI()
             end
         )
 
-
-        ----------------------------------------------------
         -- Initial state.
-        ----------------------------------------------------
-
         UpdateModuleState(
             module,
             refs
         )
 
-
-        ----------------------------------------------------
         -- Configuration changed callback.
-        --
-        -- We use pfUI's config:changed event so that the
+        -- DQB uses pfUI's config: changed event so that the
         -- greyout state is refreshed whenever either
         -- checkbox changes.
-        ----------------------------------------------------
-
         if pfUI.events
             and pfUI.events.RegisterCallback then
 
@@ -989,11 +768,7 @@ function DQB:CreateGUI()
 
     end
 
-
-    --------------------------------------------------------
     -- GENERAL
-    --------------------------------------------------------
-
     CreateGUIEntry(
         "DQB",
         "General",
@@ -1010,11 +785,7 @@ function DQB:CreateGUI()
         end
     )
 
-
-    --------------------------------------------------------
     -- QUEST & GOSSIP
-    --------------------------------------------------------
-
     CreateGUIEntry(
         "DQB",
         "Quest & Gossip",
@@ -1028,11 +799,7 @@ function DQB:CreateGUI()
         end
     )
 
-
-    --------------------------------------------------------
     -- QUEST LOG
-    --------------------------------------------------------
-
     CreateGUIEntry(
         "DQB",
         "Quest Log",
@@ -1046,14 +813,8 @@ function DQB:CreateGUI()
         end
     )
 
-
-    --------------------------------------------------------
     -- BOOKS
-    --------------------------------------------------------
-    --
-    -- Books corresponds to the original pfUI itemtext.lua.
-    --------------------------------------------------------
-
+    -- Books corresponds to the original brues's pfUI's itemtext.lua.
     CreateGUIEntry(
         "DQB",
         "Books",
@@ -1067,30 +828,17 @@ function DQB:CreateGUI()
         end
     )
 
-
-    --------------------------------------------------------
     -- MERCHANT
-    --------------------------------------------------------
-    --
-    -- Intentionally not configured yet.
-    --------------------------------------------------------
-
+    -- Intentionally not configured yet, don't think it will be needed.
+    
 end
 
-
-------------------------------------------------------------
 -- Compatibility with core.lua
-------------------------------------------------------------
-
 function DQB:InitializeGUI()
     self:CreateGUI()
 end
 
-
-------------------------------------------------------------
 -- Initialize GUI after pfUI has loaded
-------------------------------------------------------------
-
 local event = CreateFrame("Frame")
 
 event:RegisterEvent("ADDON_LOADED")
