@@ -1,35 +1,22 @@
-------------------------------------------------------------
 -- pfUI-DQB
 -- gui.lua
 --
 -- Registers DQB configuration inside pfUI's GUI.
-------------------------------------------------------------
-
 local DQB = pfUI and pfUI.dqb
 
 if not DQB then
     return
 end
 
-
-------------------------------------------------------------
 -- Create DQB configuration menu
-------------------------------------------------------------
-
 function DQB:CreateGUI()
 
-    --------------------------------------------------------
     -- Make sure pfUI GUI is available
-    --------------------------------------------------------
-
     if not pfUI.gui then
         return
     end
 
-    --------------------------------------------------------
     -- Make sure our configuration exists
-    --------------------------------------------------------
-
     if self.InitializeConfig then
         self:InitializeConfig()
     end
@@ -38,10 +25,7 @@ function DQB:CreateGUI()
         return
     end
 
-    --------------------------------------------------------
     -- pfUI GUI helpers
-    --------------------------------------------------------
-
     local CreateConfig = pfUI.gui.CreateConfig
     local CreateGUIEntry = pfUI.gui.CreateGUIEntry
 
@@ -852,4 +836,279 @@ function DQB:CreateGUI()
         )
 
 
-        ------
+        ----------------------------------------------------
+        -- CUSTOM:
+        -- Background Color
+        ----------------------------------------------------
+
+        refs.custom.backgroundColor = CreateConfig(
+            nil,
+            "Background Color",
+            module.custom,
+            "background_color",
+            "color"
+        )
+
+
+        ----------------------------------------------------
+        -- CUSTOM:
+        -- Background Opacity
+        ----------------------------------------------------
+
+        refs.custom.backgroundAlpha =
+            CreateOpacitySlider(
+                "Background Opacity",
+                module.custom,
+                "background_alpha"
+            )
+
+
+        ----------------------------------------------------
+        -- CUSTOM:
+        -- Fonts
+        ----------------------------------------------------
+
+        refs.custom.font = CreateConfig(
+            nil,
+            "Fonts",
+            module.custom,
+            "font",
+            "dropdown",
+            pfUI.gui.dropdowns.fonts
+        )
+
+
+        ----------------------------------------------------
+        -- CUSTOM:
+        -- Title Color
+        ----------------------------------------------------
+
+        refs.custom.titleColor = CreateConfig(
+            nil,
+            "Title Color",
+            module.custom,
+            "title_color",
+            "color"
+        )
+
+
+        ----------------------------------------------------
+        -- CUSTOM:
+        -- Text Color
+        ----------------------------------------------------
+
+        refs.custom.textColor = CreateConfig(
+            nil,
+            "Text Color",
+            module.custom,
+            "text_color",
+            "color"
+        )
+
+
+        ----------------------------------------------------
+        -- RESET CUSTOM VALUES
+        ----------------------------------------------------
+
+        refs.custom.reset = CreateConfig(
+            nil,
+            "Reset Custom Values",
+            module.custom,
+            "reset",
+            "button",
+            function()
+
+                ResetCustomStyle(module)
+
+            end
+        )
+
+
+        ----------------------------------------------------
+        -- Initial state.
+        ----------------------------------------------------
+
+        UpdateModuleState(
+            module,
+            refs
+        )
+
+
+        ----------------------------------------------------
+        -- Configuration changed callback.
+        --
+        -- We use pfUI's config:changed event so that the
+        -- greyout state is refreshed whenever either
+        -- checkbox changes.
+        ----------------------------------------------------
+
+        if pfUI.events
+            and pfUI.events.RegisterCallback then
+
+            pfUI.events:RegisterCallback(
+                "config:changed",
+                function(category, config)
+
+                    if category ~= module then
+                        return
+                    end
+
+
+                    if config == "use_pfui_style" then
+
+                        if module.use_pfui_style == "1" then
+
+                            module.use_custom_style = "0"
+
+                        end
+
+                        UpdateModuleState(
+                            module,
+                            refs
+                        )
+
+                    elseif config == "use_custom_style" then
+
+                        if module.use_custom_style == "1" then
+
+                            module.use_pfui_style = "0"
+
+                        end
+
+                        UpdateModuleState(
+                            module,
+                            refs
+                        )
+
+                    end
+
+                end
+            )
+
+        end
+
+    end
+
+
+    --------------------------------------------------------
+    -- GENERAL
+    --------------------------------------------------------
+
+    CreateGUIEntry(
+        "DQB",
+        "General",
+        function()
+
+            CreateConfig(
+                nil,
+                "Enable DQB",
+                pfUI_config.dqb.general,
+                "enable",
+                "checkbox"
+            )
+
+        end
+    )
+
+
+    --------------------------------------------------------
+    -- QUEST & GOSSIP
+    --------------------------------------------------------
+
+    CreateGUIEntry(
+        "DQB",
+        "Quest & Gossip",
+        function()
+
+            CreateModuleConfig(
+                pfUI_config.dqb.questgossip,
+                CreateConfig
+            )
+
+        end
+    )
+
+
+    --------------------------------------------------------
+    -- QUEST LOG
+    --------------------------------------------------------
+
+    CreateGUIEntry(
+        "DQB",
+        "Quest Log",
+        function()
+
+            CreateModuleConfig(
+                pfUI_config.dqb.questlog,
+                CreateConfig
+            )
+
+        end
+    )
+
+
+    --------------------------------------------------------
+    -- BOOKS
+    --------------------------------------------------------
+    --
+    -- Books corresponds to the original pfUI itemtext.lua.
+    --------------------------------------------------------
+
+    CreateGUIEntry(
+        "DQB",
+        "Books",
+        function()
+
+            CreateModuleConfig(
+                pfUI_config.dqb.books,
+                CreateConfig
+            )
+
+        end
+    )
+
+
+    --------------------------------------------------------
+    -- MERCHANT
+    --------------------------------------------------------
+    --
+    -- Intentionally not configured yet.
+    --------------------------------------------------------
+
+end
+
+
+------------------------------------------------------------
+-- Compatibility with core.lua
+------------------------------------------------------------
+
+function DQB:InitializeGUI()
+    self:CreateGUI()
+end
+
+
+------------------------------------------------------------
+-- Initialize GUI after pfUI has loaded
+------------------------------------------------------------
+
+local event = CreateFrame("Frame")
+
+event:RegisterEvent("ADDON_LOADED")
+
+event:SetScript("OnEvent", function()
+
+    if arg1 == "pfUI" then
+
+        if DQB.InitializeConfig then
+            DQB:InitializeConfig()
+        end
+
+        if DQB.CreateGUI then
+            DQB:CreateGUI()
+        end
+
+        event:UnregisterEvent("ADDON_LOADED")
+
+    end
+
+end)
