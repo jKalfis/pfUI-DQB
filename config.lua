@@ -1,21 +1,14 @@
-------------------------------------------------------------
 -- pfUI-DQB
 -- config.lua
---
 -- Default configuration for DQB.
 -- GUI registration is handled by gui.lua.
-------------------------------------------------------------
-
 local DQB = pfUI and pfUI.dqb
 
 if not DQB then
     return
 end
 
-------------------------------------------------------------
 -- Helpers
-------------------------------------------------------------
-
 local function GetPFUIFont()
     if pfUI and pfUI.font_default then
         return pfUI.font_default
@@ -50,20 +43,14 @@ local function GetPFUIBackgroundAlpha()
     return "0.75"
 end
 
-------------------------------------------------------------
 -- Module defaults
-------------------------------------------------------------
-
 local function InitializeModule(module)
 
     if not module then
         return
     end
 
-    --------------------------------------------------------
     -- No style selected by default.
-    --------------------------------------------------------
-
     if module.use_pfui_style == nil then
         module.use_pfui_style = "0"
     end
@@ -72,18 +59,12 @@ local function InitializeModule(module)
         module.use_custom_style = "0"
     end
 
-    --------------------------------------------------------
     -- pfUI Style
-    --------------------------------------------------------
-
     if module.pfui_background_alpha == nil then
         module.pfui_background_alpha = GetPFUIBackgroundAlpha()
     end
 
-    --------------------------------------------------------
     -- Custom Style
-    --------------------------------------------------------
-
     if not module.custom then
         module.custom = {}
     end
@@ -106,13 +87,9 @@ local function InitializeModule(module)
         custom.font = GetPFUIFont()
     end
 
-    --------------------------------------------------------
     -- DQB visual defaults
-    --
     -- Titles = Gold
     -- Text   = White
-    --------------------------------------------------------
-
     if custom.title_color == nil then
         custom.title_color = "1,0.82,0,1"
     end
@@ -123,10 +100,7 @@ local function InitializeModule(module)
 
 end
 
-------------------------------------------------------------
 -- Initialize configuration
-------------------------------------------------------------
-
 function DQB:InitializeConfig()
 
     if not pfUI_config then
@@ -137,10 +111,7 @@ function DQB:InitializeConfig()
         pfUI_config.dqb = {}
     end
 
-    --------------------------------------------------------
     -- General
-    --------------------------------------------------------
-
     if not pfUI_config.dqb.general then
         pfUI_config.dqb.general = {}
     end
@@ -151,10 +122,7 @@ function DQB:InitializeConfig()
         general.enable = "1"
     end
 
-    --------------------------------------------------------
     -- Quest & Gossip
-    --------------------------------------------------------
-
     if not pfUI_config.dqb.questgossip then
         pfUI_config.dqb.questgossip = {}
     end
@@ -163,10 +131,7 @@ function DQB:InitializeConfig()
         pfUI_config.dqb.questgossip
     )
 
-    --------------------------------------------------------
     -- Quest Log
-    --------------------------------------------------------
-
     if not pfUI_config.dqb.questlog then
         pfUI_config.dqb.questlog = {}
     end
@@ -175,10 +140,7 @@ function DQB:InitializeConfig()
         pfUI_config.dqb.questlog
     )
 
-    --------------------------------------------------------
     -- Books
-    --------------------------------------------------------
-
     if not pfUI_config.dqb.books then
         pfUI_config.dqb.books = {}
     end
@@ -187,12 +149,8 @@ function DQB:InitializeConfig()
         pfUI_config.dqb.books
     )
 
-    --------------------------------------------------------
     -- Merchant
-    --
-    -- Reserved for later.
-    --------------------------------------------------------
-
+    -- Reserved for later, it may be not needed.
     if not pfUI_config.dqb.merchant then
         pfUI_config.dqb.merchant = {}
     end
