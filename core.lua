@@ -1,4 +1,3 @@
-```lua
 -- pfUI-DQB
 -- core.lua
 -- Main core and module system for pfUI-DQB.
@@ -214,4 +213,3 @@ loader:SetScript("OnEvent", function()
     this:UnregisterAllEvents()
 
 end)
-```
