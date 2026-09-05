@@ -157,23 +157,24 @@ This approach allows pfUI-DQB to preserve the existing pfUI frame structure whil
 
 ## 📦 Installation
 
-1. Download the latest pfUI-DQB release.
+1. ![Dowload](https://github.com/jKalfis/pfUI-DQB/archive/refs/tags/v1.0.0.zip) Download the latest pfUI-DQB release.
 2. Extract the addon.
-3. Place the `pfUI-DQB` folder inside:
+3. Rename folder to `pfUI-DQB` make sure folder has the same name as the `pfUI-DQB.toc` file inside.
+4. Place the `pfUI-DQB` folder inside:
 
 ```text
-World of Warcraft/
-└── Interface/
-    └── AddOns/
-        └── pfUI-DQB/
+your OctoWoW folder/
+          └── Interface/
+                └── AddOns/
+                      └── pfUI-DQB/
 ```
 
-4. Make sure **pfUI** is installed and enabled.
-5. Start the game.
-6. Open the pfUI configuration.
-7. Find the **DQB** section.
-8. Enable the desired options.
-9. Reload the UI.
+5. Make sure **pfUI** is installed and enabled.
+6. Start the game.
+7. Open the pfUI configuration.
+8. Find the **DQB** section.
+9. Enable the desired options.
+10. Reload the UI.
 
 ---
 
@@ -359,39 +360,27 @@ The following modules are currently implemented and tested:
 
 ## 📸 Screenshots
 
-Screenshots demonstrating the addon in action will be added here.
 
 ### Gossip & Quest
 
-*Add screenshot here.*
-
-```text
 ![Gossip & Quest](screenshots/gossipquest.png)
-```
+
 
 ### Quest Log
 
-*Add screenshot here.*
-
-```text
 ![Quest Log](screenshots/questlog.png)
-```
+
 
 ### Books
 
-*Add screenshot here.*
-
-```text
 ![Books](screenshots/books.png)
-```
+
 
 ### DQB Configuration
 
-*Add screenshot here.*
 
-```text
 ![DQB Configuration](screenshots/config.png)
-```
+
 
 ---
 
