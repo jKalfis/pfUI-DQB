@@ -162,7 +162,7 @@ This approach allows pfUI-DQB to preserve the existing pfUI frame structure whil
 
 ## 📦 Installation
 
-1. [Dowload](https://github.com/jKalfis/pfUI-DQB/archive/refs/tags/v1.0.0.zip) Download the latest pfUI-DQB release.
+1. [Dowload](https://github.com/jKalfis/pfUI-DQB/archive/refs/tags/v1.0.0.zip) the latest pfUI-DQB release.
 2. Extract the addon.
 3. **Rename folder to `pfUI-DQB` make sure folder has the same name as the `pfUI-DQB.toc` file inside.**
 4. Place the `pfUI-DQB` folder inside:
