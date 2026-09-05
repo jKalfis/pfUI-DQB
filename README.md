@@ -12,7 +12,7 @@ The project was created for **OctoWoW / World of Warcraft Vanilla 1.12.1** and i
 
 ## ✨ Features
 
-pfUI-DQB currently provides two configurable customization modules:
+pfUI-DQB currently provides two modules:
 
 ### 💬 Dialogs & Quest Log
 
@@ -37,20 +37,18 @@ This means that when DQB is enabled:
 
 * The pfUI frame is still used
 * The pfUI frame styling is preserved
-* The pfUI close button remains
 * The pfUI frame remains movable
 * The pfUI buttons remain pfUI styled
 * DQB only applies its additional visual customizations
 
 ### 📖 Books
 
-The **Books** option controls Blizzard's Item Text / Book interface.
+The **Books** option controls Item Text interface.
 
 It provides:
 
 * Dark translucent book background
 * White page text
-* Gold book title
 * White page number
 * pfUI styled navigation buttons
 * pfUI styled scrollbar
@@ -77,7 +75,7 @@ The main visual goal of pfUI-DQB is to replace Blizzard's original parchment-hea
 
 Quest, Gossip and Book text areas use a:
 
-**Black / 50% alpha translucent background**
+**Black / 10% alpha translucent background**
 
 instead of Blizzard's original parchment texture.
 
@@ -203,7 +201,7 @@ pfUI has multiple forks and versions, and its internal API and Blizzard skin imp
 
 Because pfUI-DQB works with pfUI's existing UI structures and API, changes to those structures may cause the addon to stop working correctly.
 
-If you are using a different pfUI version, please test carefully before reporting an issue.
+If you are using a different pfUI version, please test carefully.
 
 ---
 
@@ -333,7 +331,6 @@ The working modifications were then converted into an independent addon so that:
 * pfUI itself does not need to be modified
 * pfUI updates do not require manually reapplying changes
 * DQB options can be enabled or disabled independently
-* The customization can be maintained as a separate project
 * The original pfUI frame styling remains intact
 
 The long-term goal is to continue expanding this architecture without unnecessarily modifying pfUI itself.
@@ -445,7 +442,7 @@ Developed as an independent customization layer for the pfUI environment used by
 
 ## ⭐ Final Note
 
-pfUI-DQB was created with one simple idea:
+pfUI-DQB was created by jKalfis, with one simple idea:
 
 > **Keep pfUI. Keep its frames. Keep its style. Just make Blizzard's parchment interfaces look better.**
 
