@@ -230,7 +230,6 @@ The addon was developed and tested around the pfUI + ClassicAPI environment crea
 pfUI-DQB requires:
 
 * World of Warcraft Vanilla 1.12.1
-* pfUI
 * The compatible pfUI version maintained by brues-code
 * ClassicAPI / compatible OctoWoW environment
 
