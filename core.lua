@@ -1,26 +1,46 @@
+------------------------------------------------------------
 -- pfUI-DQB
 -- core.lua
+--
 -- Main core and module system for pfUI-DQB.
+------------------------------------------------------------
+
 local addonName = "pfUI-DQB"
 
+
+------------------------------------------------------------
 -- pfUI-DQB requires pfUI
+------------------------------------------------------------
+
 if not pfUI then
     return
 end
 
+
+------------------------------------------------------------
 -- Main namespace
+------------------------------------------------------------
+
 pfUI.dqb = pfUI.dqb or {}
 
 local DQB = pfUI.dqb
 
+
+------------------------------------------------------------
 -- Basic information
+------------------------------------------------------------
+
 DQB.name = addonName
 DQB.version = "0.1.1"
 
 DQB.config = DQB.config or {}
 DQB.modules = DQB.modules or {}
 
+
+------------------------------------------------------------
 -- Module system
+------------------------------------------------------------
+
 function DQB:RegisterModule(name, func)
 
     if not name or not func then
@@ -30,7 +50,11 @@ function DQB:RegisterModule(name, func)
     self.modules[name] = func
 end
 
+
+------------------------------------------------------------
 -- Configuration helpers
+------------------------------------------------------------
+
 function DQB:GetGlobalConfig(key, default)
 
     if not pfUI_config
@@ -75,7 +99,11 @@ function DQB:SetConfig(module, key, value)
     pfUI_config.dqb[module][key] = value
 end
 
+
+------------------------------------------------------------
 -- Enable / Disable
+------------------------------------------------------------
+
 function DQB:IsEnabled()
 
     return self:GetConfig(
@@ -109,7 +137,11 @@ function DQB:SetEnabled(enabled)
 
 end
 
+
+------------------------------------------------------------
 -- Debug
+------------------------------------------------------------
+
 function DQB:Debug(message)
 
     if DEFAULT_CHAT_FRAME then
@@ -123,7 +155,11 @@ function DQB:Debug(message)
 
 end
 
+
+------------------------------------------------------------
 -- Initialize modules
+------------------------------------------------------------
+
 function DQB:Initialize()
 
     self:Debug(
@@ -135,13 +171,21 @@ function DQB:Initialize()
         "status: "
         .. (self:IsEnabled() and "enabled" or "disabled")
     )
-    
-    -- Modules will not initialize when DQB is disabled
+
+
+    --------------------------------------------------------
+    -- Do not initialize modules when DQB is disabled
+    --------------------------------------------------------
+
     if not self:IsEnabled() then
         return
     end
-    
+
+
+    --------------------------------------------------------
     -- Load registered modules
+    --------------------------------------------------------
+
     for name, module in pairs(self.modules) do
 
         if module then
@@ -173,7 +217,11 @@ function DQB:Initialize()
 
 end
 
+
+------------------------------------------------------------
 -- Initialize after SavedVariables are available
+------------------------------------------------------------
+
 local loader = CreateFrame("Frame")
 
 loader:RegisterEvent("VARIABLES_LOADED")
@@ -181,35 +229,57 @@ loader:RegisterEvent("VARIABLES_LOADED")
 
 loader:SetScript("OnEvent", function()
 
-    
-    -- Make sure this is the expected event
+    --------------------------------------------------------
+    -- Make sure this is our expected event
+    --------------------------------------------------------
+
     if event ~= "VARIABLES_LOADED" then
         return
     end
-    
+
+
+    --------------------------------------------------------
     -- pfUI must exist
+    --------------------------------------------------------
+
     if not pfUI then
         return
     end
-    
+
+
+    --------------------------------------------------------
     -- Initialize configuration
+    --------------------------------------------------------
+
     if DQB.InitializeConfig then
 
         DQB:InitializeConfig()
 
     end
-    
+
+
+    --------------------------------------------------------
     -- Initialize GUI
+    --------------------------------------------------------
+
     if DQB.InitializeGUI then
 
         DQB:InitializeGUI()
 
     end
-    
+
+
+    --------------------------------------------------------
     -- Initialize DQB modules
+    --------------------------------------------------------
+
     DQB:Initialize()
-    
+
+
+    --------------------------------------------------------
     -- Only execute once
+    --------------------------------------------------------
+
     this:UnregisterAllEvents()
 
 end)
