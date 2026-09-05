@@ -158,7 +158,7 @@ This approach allows pfUI-DQB to preserve the existing pfUI frame structure whil
 
 ## 📦 Auto-Installation
 
-1. Use github link to install https://github.com/jKalfis/pfUI-DQB
+1. Use github link to install ```https://github.com/jKalfis/pfUI-DQB```
 
 ## 📦 Installation
 
