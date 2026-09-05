@@ -48,6 +48,7 @@ The **Books** option controls Item Text interface.
 It provides:
 
 * Dark translucent book background
+* Gold title
 * White page text
 * White page number
 * pfUI styled navigation buttons
@@ -154,6 +155,10 @@ Final Interface
 This approach allows pfUI-DQB to preserve the existing pfUI frame structure while changing specific elements such as colors and parchment backgrounds.
 
 ---
+
+## 📦 Auto-Installation
+
+1. Use github link to install https://github.com/jKalfis/pfUI-DQB
 
 ## 📦 Installation
 
