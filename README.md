@@ -221,7 +221,7 @@ World of Warcraft Vanilla 1.12.1
 
 and specifically for the **OctoWoW environment**.
 
-The addon was developed and tested around the pfUI + ClassicAPI environment used by OctoWoW.
+The addon was developed and tested around the pfUI + ClassicAPI environment created by brues.
 
 ---
 
