@@ -189,7 +189,7 @@ your OctoWoW folder/
 
 pfUI-DQB is developed specifically for:
 
-[**pfUI by brues-code**](https://github.com/brues-code/pfUI)
+[**brues's pfUI - ClassicAPI Edition**](https://github.com/brues-code/pfUI)
 
 Repository:
 
