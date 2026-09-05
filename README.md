@@ -2,7 +2,7 @@
 
 **pfUI-DQB** is a lightweight customization addon for **pfUI** that enhances the appearance of Blizzard's Quest, Gossip, Quest Log and Book interfaces while keeping pfUI's original frame styling intact.
 
-The project was created for **OctoWoW / World of Warcraft Vanilla 1.12.1** and is designed specifically around the pfUI version maintained by **brues-code**.
+The project was created for **OctoWoW / World of Warcraft Vanilla 1.12.1** and is designed specifically around the pfUI version maintained by **brues**.
 
 > **pfUI-DQB does not replace pfUI.**
 >
